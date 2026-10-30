@@ -1,0 +1,1551 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الأمثلة العملية · Flutter Design Patterns</title>
+<meta name="description" content="14 مثال Dart بيشتغل على طول، كل واحد فيه قبل وبعد الـ pattern.">
+<meta property="og:title" content="الأمثلة العملية · Flutter Design Patterns">
+<meta property="og:description" content="14 مثال Dart بيشتغل على طول، كل واحد فيه قبل وبعد الـ pattern.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://dobydragon.github.io/flutter-design-patterns/examples.html">
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+
+</head>
+<body>
+<a class="skip" href="#content">تخطى للمحتوى</a>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html"><img src="icons/favicon.svg" alt="" width="28" height="28"><bdi>Flutter Design Patterns</bdi></a>
+    <button class="menu-btn" aria-expanded="false" aria-controls="nav" aria-label="القائمة">☰</button>
+    <nav id="nav" class="nav"><a href="index.html">الرئيسية</a><a href="guide.html">الدليل</a><a href="examples.html" aria-current="page">الأمثلة</a><a href="interview.html">أسئلة الـ Interview</a><a href="roadmap.html">خطة المذاكرة</a></nav>
+    <button class="theme-btn" type="button" aria-label="تبديل الوضع الليلي">◐</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" aria-label="المحتويات">
+    <details class="toc-box" open>
+      <summary>المحتويات</summary>
+      <ul class="toc"><li class="l2"><a href="#ex-01"><span class="num">01</span> <bdi>Singleton (Local Storage)</bdi></a></li><li class="l2"><a href="#ex-02"><span class="num">02</span> <bdi>Factory (Notifications)</bdi></a></li><li class="l2"><a href="#ex-03"><span class="num">03</span> <bdi>Repository (Employee Profile)</bdi></a></li><li class="l2"><a href="#ex-04"><span class="num">04</span> <bdi>Dependency Injection (Attendance)</bdi></a></li><li class="l2"><a href="#ex-05"><span class="num">05</span> <bdi>Service Locator vs DI (Permissions)</bdi></a></li><li class="l2"><a href="#ex-06"><span class="num">06</span> <bdi>Observer (Attendance board)</bdi></a></li><li class="l2"><a href="#ex-07"><span class="num">07</span> <bdi>Strategy (Check-in methods)</bdi></a></li><li class="l2"><a href="#ex-08"><span class="num">08</span> <bdi>Adapter (Legacy HR API)</bdi></a></li><li class="l2"><a href="#ex-09"><span class="num">09</span> <bdi>Facade (Auth)</bdi></a></li><li class="l2"><a href="#ex-10"><span class="num">10</span> <bdi>Decorator (Cached + Logging repository)</bdi></a></li><li class="l2"><a href="#ex-11"><span class="num">11</span> <bdi>Command (Offline queue + undo)</bdi></a></li><li class="l2"><a href="#ex-12"><span class="num">12</span> <bdi>State (Leave request)</bdi></a></li><li class="l2"><a href="#ex-13"><span class="num">13</span> <bdi>Builder (Report request)</bdi></a></li><li class="l2"><a href="#ex-14"><span class="num">14</span> <bdi>Result (Error handling)</bdi></a></li><li class="l2"><a href="#wiring"><bdi>Flutter wiring</bdi></a></li></ul>
+    </details>
+  </aside>
+  <main id="content" class="content"><h1><bdi>Practical Dart Examples</bdi></h1><p dir="rtl">كل ملف <strong>Dart صافي</strong> (من غير Flutter) عشان يشتغل على طول:</p>
+<pre dir="ltr"><code class="language-bash"># download the file, then:
+dart run 07_strategy_checkin_methods.dart
+</code></pre>
+<p dir="rtl">كل ملف فيه جزء <strong>BEFORE</strong> (التصميم الأول) وجزء <strong>AFTER</strong> (بعد الـ Pattern)، والـ <code>main()</code> بيطبع الفرق.<br />
+كلهم اتجربوا واشتغلوا على Dart 3.11 بتاريخ <bdi class="nw">2026-10-30</bdi>.</p>
+<p dir="rtl"><strong>ترتيب المذاكرة المقترح:</strong> 04 → 03 → 06 → 01 → 02 → 09 → 14 → 07 → 08 → 05 → 10 → 11 → 12 → 13</p>
+<section class="example" id="ex-01">
+  <h2><span class="num">01</span> <bdi>Singleton (Local Storage)</bdi></h2>
+  <div class="ex-explain"><ol>
+<li dir="rtl"><strong>المشكلة:</strong> كل شاشة بتعمل object تخزين جديد، فاللي اتحفظ في Login مش باين في Home.</li>
+<li dir="rtl"><strong>قبل:</strong> <code>BeforeLocalStorage()</code> بيتعمل كل مرة.</li>
+<li dir="rtl"><strong>مشاكله:</strong> بيانات ضايعة، وتحميل من الـ disk أكتر من مرة.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>LocalStorage.instance</code> (strict)، و <code>PrefsStore.instance</code> + interface (soft، زي <code>NetworkManager</code> اللي بيتعمله inject).</li>
+<li dir="rtl"><strong>الفرق:</strong> نسخة واحدة مشتركة.</li>
+<li dir="rtl"><strong>ليه أحسن:</strong> الـ state متسق. والـ soft version بتسيبك تعمل نسخة جديدة في الـ test.</li>
+<li dir="rtl"><strong>امتى الأولى أحسن؟</strong> لو الـ object ملوش state ورخيص (زي formatter)، اعمله عادي أو static functions، ومش محتاج Singleton خالص.</li>
+</ol></div>
+  <div class="code-card">
+    <div class="code-head" dir="ltr">
+      <span class="fname">01_singleton_local_storage.dart</span>
+      <span class="code-actions">
+        <button type="button" class="copy-btn" data-target="code-01">Copy</button>
+        <a class="dl-btn" href="examples/01_singleton_local_storage.dart" download>Download</a>
+      </span>
+    </div>
+    <pre dir="ltr"><code id="code-01" class="language-dart">// Singleton — Local Storage
+// Run: dart run 01_singleton_local_storage.dart
+//
+// Typical Flutter shapes: a SharedPreferences wrapper (CacheHelper) and a
+// NetworkManager.instance that is still injectable in tests.
+
+// ---------------------------------------------------------------------------
+// BEFORE: every screen creates its own storage object.
+// ---------------------------------------------------------------------------
+class BeforeLocalStorage {
+  BeforeLocalStorage() {
+    print(&#x27;BeforeLocalStorage created (loading prefs from disk...)&#x27;);
+  }
+
+  final Map&lt;String, String&gt; _data = {};
+
+  void save(String key, String value) =&gt; _data[key] = value;
+  String? read(String key) =&gt; _data[key];
+}
+
+void beforeDemo() {
+  BeforeLocalStorage().save(&#x27;token&#x27;, &#x27;abc&#x27;); // login screen
+  final token = BeforeLocalStorage().read(&#x27;token&#x27;); // home screen
+  print(&#x27;Before → token on home screen: $token&#x27;); // null! different object
+}
+
+// ---------------------------------------------------------------------------
+// AFTER (A): strict Singleton — private constructor, one static instance.
+// ---------------------------------------------------------------------------
+class LocalStorage {
+  LocalStorage._() {
+    print(&#x27;LocalStorage created once&#x27;);
+  }
+
+  static final LocalStorage instance = LocalStorage._();
+
+  final Map&lt;String, String&gt; _data = {};
+
+  void save(String key, String value) =&gt; _data[key] = value;
+  String? read(String key) =&gt; _data[key];
+}
+
+// ---------------------------------------------------------------------------
+// AFTER (B): &quot;soft singleton&quot; — public constructor (tests can make a fresh
+// one) + a shared default instance that is handed out through DI.
+// This is a common shape for a NetworkManager.
+// ---------------------------------------------------------------------------
+abstract interface class KeyValueStore {
+  void save(String key, String value);
+  String? read(String key);
+}
+
+class PrefsStore implements KeyValueStore {
+  PrefsStore();
+
+  static final PrefsStore instance = PrefsStore();
+
+  final Map&lt;String, String&gt; _data = {};
+
+  @override
+  void save(String key, String value) =&gt; _data[key] = value;
+
+  @override
+  String? read(String key) =&gt; _data[key];
+}
+
+class SessionCubitLike {
+  SessionCubitLike(this._store); // depends on the interface, not on .instance
+
+  final KeyValueStore _store;
+
+  bool get isLoggedIn =&gt; _store.read(&#x27;token&#x27;) != null;
+}
+
+void main() {
+  beforeDemo();
+
+  LocalStorage.instance.save(&#x27;token&#x27;, &#x27;abc&#x27;);
+  print(&#x27;After  → token on home screen: ${LocalStorage.instance.read(&#x27;token&#x27;)}&#x27;);
+  print(&#x27;Same object? ${identical(LocalStorage.instance, LocalStorage.instance)}&#x27;);
+
+  // Production: pass the shared instance.
+  final prod = SessionCubitLike(PrefsStore.instance);
+  // Test: pass a fresh, isolated store — no shared global state between tests.
+  final test = SessionCubitLike(PrefsStore());
+  PrefsStore.instance.save(&#x27;token&#x27;, &#x27;abc&#x27;);
+  print(&#x27;prod logged in: ${prod.isLoggedIn}, test logged in: ${test.isLoggedIn}&#x27;);
+}
+</code></pre>
+  </div>
+</section>
+<section class="example" id="ex-02">
+  <h2><span class="num">02</span> <bdi>Factory (Notifications)</bdi></h2>
+  <div class="ex-explain"><ol>
+<li dir="rtl"><strong>المشكلة:</strong> كل شاشة بتبني الإشعار بإيدها.</li>
+<li dir="rtl"><strong>قبل:</strong> maps مكتوبة يدوي في أكتر من مكان.</li>
+<li dir="rtl"><strong>مشاكله:</strong> typo في الـ route (<code>/attendence</code>)، ومفيش مكان واحد تصلح فيه.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>AppNotification.forKind(kind)</code> و <code>fromMap(map)</code>.</li>
+<li dir="rtl"><strong>الفرق:</strong> الـ caller بيقول "عايز إيه" بس.</li>
+<li dir="rtl"><strong>ليه أحسن:</strong> مكان واحد للتعديل + fallback آمن لو جالك نوع مش معروف.</li>
+<li dir="rtl"><strong>امتى الأولى أحسن؟</strong> لو object واحد بيتعمل في مكان واحد، الـ constructor العادي كفاية.</li>
+</ol></div>
+  <div class="code-card">
+    <div class="code-head" dir="ltr">
+      <span class="fname">02_factory_notifications.dart</span>
+      <span class="code-actions">
+        <button type="button" class="copy-btn" data-target="code-02">Copy</button>
+        <a class="dl-btn" href="examples/02_factory_notifications.dart" download>Download</a>
+      </span>
+    </div>
+    <pre dir="ltr"><code id="code-02" class="language-dart">// Factory (Simple Factory + Dart factory constructor) — Notifications
+// Run: dart run 02_factory_notifications.dart
+//
+// Typical Flutter shapes: NotificationTemplate.forKind(kind) and
+// ServerFailure.fromCode(code).
+
+// ---------------------------------------------------------------------------
+// BEFORE: every caller builds the notification by hand.
+// ---------------------------------------------------------------------------
+void beforeDemo() {
+  // In the leave-approval screen:
+  final a = {&#x27;title&#x27;: &#x27;Leave approved&#x27;, &#x27;route&#x27;: &#x27;/leave&#x27;, &#x27;icon&#x27;: &#x27;check&#x27;};
+  // In the attendance screen (someone typed it slightly differently):
+  final b = {&#x27;title&#x27;: &#x27;Attendance Missing&#x27;, &#x27;route&#x27;: &#x27;/attendence&#x27;, &#x27;icon&#x27;: &#x27;warn&#x27;};
+  print(&#x27;Before → $a | $b   (typo in route, no single place to fix)&#x27;);
+}
+
+// ---------------------------------------------------------------------------
+// AFTER: one place decides how each kind is built.
+// ---------------------------------------------------------------------------
+enum NotificationKind { leaveApproved, attendanceMissing, payslipReady }
+
+class AppNotification {
+  const AppNotification._({
+    required this.title,
+    required this.route,
+    required this.icon,
+  });
+
+  final String title;
+  final String route;
+  final String icon;
+
+  /// Factory constructor: callers only say *what* they want.
+  factory AppNotification.forKind(NotificationKind kind, {String? name}) {
+    return switch (kind) {
+      NotificationKind.leaveApproved =&gt; AppNotification._(
+          title: &#x27;Leave approved${name == null ? &#x27;&#x27; : &#x27; for $name&#x27;}&#x27;,
+          route: &#x27;/leave&#x27;,
+          icon: &#x27;check&#x27;,
+        ),
+      NotificationKind.attendanceMissing =&gt; const AppNotification._(
+          title: &#x27;Attendance missing&#x27;,
+          route: &#x27;/attendance&#x27;,
+          icon: &#x27;warn&#x27;,
+        ),
+      NotificationKind.payslipReady =&gt; const AppNotification._(
+          title: &#x27;Your payslip is ready&#x27;,
+          route: &#x27;/payslip&#x27;,
+          icon: &#x27;money&#x27;,
+        ),
+    };
+  }
+
+  /// Factory constructor that parses data coming from Firestore / FCM.
+  factory AppNotification.fromMap(Map&lt;String, dynamic&gt; map) {
+    final kind = NotificationKind.values.firstWhere(
+      (k) =&gt; k.name == map[&#x27;kind&#x27;],
+      orElse: () =&gt; NotificationKind.attendanceMissing,
+    );
+    return AppNotification.forKind(kind, name: map[&#x27;name&#x27;] as String?);
+  }
+
+  @override
+  String toString() =&gt; &#x27;[$icon] $title → $route&#x27;;
+}
+
+void main() {
+  beforeDemo();
+  print(AppNotification.forKind(NotificationKind.leaveApproved, name: &#x27;Ahmed&#x27;));
+  print(AppNotification.fromMap({&#x27;kind&#x27;: &#x27;payslipReady&#x27;}));
+  print(AppNotification.fromMap({&#x27;kind&#x27;: &#x27;unknown&#x27;})); // safe fallback
+}
+</code></pre>
+  </div>
+</section>
+<section class="example" id="ex-03">
+  <h2><span class="num">03</span> <bdi>Repository (Employee Profile)</bdi></h2>
+  <div class="ex-explain"><ol>
+<li dir="rtl"><strong>المشكلة:</strong> الـ Cubit عارف اسم الـ collection وأسماء الـ fields.</li>
+<li dir="rtl"><strong>قبل:</strong> <code>BeforeProfileCubit</code> بيقرا <code>raw['full_name']</code>.</li>
+<li dir="rtl"><strong>مشاكله:</strong> تغيير الـ backend أو اسم field = تعديل في كل Cubit، ومفيش caching، وصعب تعمله test.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>EmployeeRemoteDataSource</code> (raw I/O) ← <code>EmployeeRepository</code> (interface) ← <code>FirestoreEmployeeRepository</code> + <code>InMemoryEmployeeRepository</code>.</li>
+<li dir="rtl"><strong>الفرق:</strong> الـ Cubit بيتكلم بلغة الـ app (<code>Employee</code>) مش بلغة Firestore.</li>
+<li dir="rtl"><strong>ليه أحسن:</strong> تقدر تبدّل الـ repo كله في الـ test، وتضيف cache في مكان واحد.</li>
+<li dir="rtl"><strong>امتى الأولى أحسن؟</strong> prototype صغير أو شاشة بتقرا document واحد ومش هتتغير. وكتير من الـ apps بتكتفي بـ "Service" بدل Repository، وده مقبول في app بـ backend واحد.</li>
+</ol></div>
+  <div class="code-card">
+    <div class="code-head" dir="ltr">
+      <span class="fname">03_repository_employee_profile.dart</span>
+      <span class="code-actions">
+        <button type="button" class="copy-btn" data-target="code-03">Copy</button>
+        <a class="dl-btn" href="examples/03_repository_employee_profile.dart" download>Download</a>
+      </span>
+    </div>
+    <pre dir="ltr"><code id="code-03" class="language-dart">// Repository (+ Data Source) — Employee Profile
+// Run: dart run 03_repository_employee_profile.dart
+//
+// A feature repository that combines data sources, placed behind an
+// abstract interface so Cubits can be tested with fakes.
+
+// Pretend this is FirebaseFirestore.
+class FakeDb {
+  final Map&lt;String, Map&lt;String, dynamic&gt;&gt; employees = {
+    &#x27;e1&#x27;: {&#x27;full_name&#x27;: &#x27;Sara Ali&#x27;, &#x27;dept&#x27;: &#x27;HR&#x27;, &#x27;salary&#x27;: 9000},
+  };
+}
+
+// ---------------------------------------------------------------------------
+// BEFORE: the &quot;cubit&quot; talks to the DB, parses maps and applies rules itself.
+// ---------------------------------------------------------------------------
+class BeforeProfileCubit {
+  BeforeProfileCubit(this._db);
+
+  final FakeDb _db;
+
+  String load(String id) {
+    final raw = _db.employees[id]; // knows the collection
+    if (raw == null) return &#x27;not found&#x27;;
+    final name = raw[&#x27;full_name&#x27;] as String; // knows the field names
+    return &#x27;Hello $name&#x27;;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// AFTER: Model ← DataSource (raw I/O) ← Repository (app-facing API).
+// ---------------------------------------------------------------------------
+class Employee {
+  const Employee({required this.id, required this.name, required this.department});
+
+  final String id;
+  final String name;
+  final String department;
+}
+
+/// Data source: only knows how to talk to one backend. Returns raw data.
+class EmployeeRemoteDataSource {
+  EmployeeRemoteDataSource(this._db);
+
+  final FakeDb _db;
+
+  Future&lt;Map&lt;String, dynamic&gt;?&gt; fetch(String id) async =&gt; _db.employees[id];
+}
+
+/// What the rest of the app depends on.
+abstract interface class EmployeeRepository {
+  Future&lt;Employee?&gt; getEmployee(String id);
+}
+
+class FirestoreEmployeeRepository implements EmployeeRepository {
+  FirestoreEmployeeRepository(this._remote);
+
+  final EmployeeRemoteDataSource _remote;
+  final Map&lt;String, Employee&gt; _cache = {};
+
+  @override
+  Future&lt;Employee?&gt; getEmployee(String id) async {
+    final cached = _cache[id];
+    if (cached != null) return cached;
+    final raw = await _remote.fetch(id);
+    if (raw == null) return null;
+    final employee = Employee(
+      id: id,
+      name: raw[&#x27;full_name&#x27;] as String,
+      department: raw[&#x27;dept&#x27;] as String,
+    );
+    return _cache[id] = employee;
+  }
+}
+
+/// In tests (or a demo build) swap the whole repository.
+class InMemoryEmployeeRepository implements EmployeeRepository {
+  @override
+  Future&lt;Employee?&gt; getEmployee(String id) async =&gt;
+      const Employee(id: &#x27;x&#x27;, name: &#x27;Test User&#x27;, department: &#x27;QA&#x27;);
+}
+
+class ProfileCubit {
+  ProfileCubit(this._repo);
+
+  final EmployeeRepository _repo;
+
+  Future&lt;String&gt; load(String id) async {
+    final e = await _repo.getEmployee(id);
+    return e == null ? &#x27;not found&#x27; : &#x27;Hello ${e.name} (${e.department})&#x27;;
+  }
+}
+
+Future&lt;void&gt; main() async {
+  final db = FakeDb();
+  print(&#x27;Before → ${BeforeProfileCubit(db).load(&#x27;e1&#x27;)}&#x27;);
+
+  final repo = FirestoreEmployeeRepository(EmployeeRemoteDataSource(db));
+  print(&#x27;After  → ${await ProfileCubit(repo).load(&#x27;e1&#x27;)}&#x27;);
+  print(&#x27;Test   → ${await ProfileCubit(InMemoryEmployeeRepository()).load(&#x27;e1&#x27;)}&#x27;);
+}
+</code></pre>
+  </div>
+</section>
+<section class="example" id="ex-04">
+  <h2><span class="num">04</span> <bdi>Dependency Injection (Attendance)</bdi></h2>
+  <div class="ex-explain"><ol>
+<li dir="rtl"><strong>المشكلة:</strong> "هل الموظف متأخر؟" معتمدة على الوقت الحقيقي.</li>
+<li dir="rtl"><strong>قبل:</strong> <code>BeforeAttendanceService</code> بيعمل <code>SystemClock()</code> جواه.</li>
+<li dir="rtl"><strong>مشاكله:</strong> مستحيل تختبر حالة 08:30 و 09:15 بشكل ثابت.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>AttendanceService(clock: ...)</code>، و <code>buildProductionAttendance()</code> = composition root.</li>
+<li dir="rtl"><strong>الفرق:</strong> الـ dependency بتيجي من برة.</li>
+<li dir="rtl"><strong>ليه أحسن:</strong> testable، وتقدر تغير السلوك من غير ما تعدل الـ class. ده نفس اللي بيحصل لما الـ service ياخد <code>FirebaseFirestore? firestore</code>.</li>
+<li dir="rtl"><strong>امتى الأولى أحسن؟</strong> value objects و helpers صغيرة ملهاش side effects (زي <code>DateFormat</code>) مش محتاجة injection.</li>
+</ol></div>
+  <div class="code-card">
+    <div class="code-head" dir="ltr">
+      <span class="fname">04_dependency_injection_attendance.dart</span>
+      <span class="code-actions">
+        <button type="button" class="copy-btn" data-target="code-04">Copy</button>
+        <a class="dl-btn" href="examples/04_dependency_injection_attendance.dart" download>Download</a>
+      </span>
+    </div>
+    <pre dir="ltr"><code id="code-04" class="language-dart">// Dependency Injection — Attendance check-in
+// Run: dart run 04_dependency_injection_attendance.dart
+//
+// Typical Flutter constructor injection, e.g.
+// PostsService({FirebaseFirestore? firestore})
+// and a composition root at the top of the widget tree.
+
+abstract interface class Clock {
+  DateTime now();
+}
+
+class SystemClock implements Clock {
+  @override
+  DateTime now() =&gt; DateTime.now();
+}
+
+class FixedClock implements Clock {
+  FixedClock(this.value);
+
+  final DateTime value;
+
+  @override
+  DateTime now() =&gt; value;
+}
+
+// ---------------------------------------------------------------------------
+// BEFORE: the class creates what it needs. Untestable &quot;is late?&quot; logic.
+// ---------------------------------------------------------------------------
+class BeforeAttendanceService {
+  final SystemClock _clock = SystemClock(); // hard-wired
+
+  bool isLate() =&gt; _clock.now().hour &gt;= 9; // result depends on when you run it
+}
+
+// ---------------------------------------------------------------------------
+// AFTER: dependencies come from outside (constructor injection).
+// ---------------------------------------------------------------------------
+class AttendanceService {
+  AttendanceService({required Clock clock, int startHour = 9})
+      : _clock = clock,
+        _startHour = startHour;
+
+  final Clock _clock;
+  final int _startHour;
+
+  bool isLate() =&gt; _clock.now().hour &gt;= _startHour;
+}
+
+// Composition root: the ONE place that knows the concrete classes
+// (in Flutter this is MultiRepositoryProvider in the root widget).
+AttendanceService buildProductionAttendance() =&gt;
+    AttendanceService(clock: SystemClock());
+
+void main() {
+  print(&#x27;Before → isLate = ${BeforeAttendanceService().isLate()} (depends on real time)&#x27;);
+
+  final at0830 = AttendanceService(clock: FixedClock(DateTime(2026, 1, 1, 8, 30)));
+  final at0915 = AttendanceService(clock: FixedClock(DateTime(2026, 1, 1, 9, 15)));
+  print(&#x27;Test 08:30 → late? ${at0830.isLate()}&#x27;); // false, always
+  print(&#x27;Test 09:15 → late? ${at0915.isLate()}&#x27;); // true, always
+  print(&#x27;Prod       → late? ${buildProductionAttendance().isLate()}&#x27;);
+}
+</code></pre>
+  </div>
+</section>
+<section class="example" id="ex-05">
+  <h2><span class="num">05</span> <bdi>Service Locator vs DI (Permissions)</bdi></h2>
+  <div class="ex-explain"><ol>
+<li dir="rtl"><strong>المشكلة:</strong> الـ ViewModel محتاج <code>PermissionService</code>، يجيبه منين؟</li>
+<li dir="rtl"><strong>قبل (SL):</strong> <code>Locator.get&lt;PermissionService&gt;()</code> جوه الـ class.</li>
+<li dir="rtl"><strong>مشاكله:</strong> الـ dependency مخفية، والـ crash بيحصل وقت التشغيل لو نسيت تسجلها.</li>
+<li dir="rtl"><strong>بعد (DI):</strong> <code>LeaveApprovalViewModelDI(PermissionService)</code>.</li>
+<li dir="rtl"><strong>الفرق:</strong> SL = الـ class <strong>بيسحب</strong>. DI = حد تاني <strong>بيدفع</strong>.</li>
+<li dir="rtl"><strong>ليه DI أحسن:</strong> الـ dependency باينة في الـ constructor، والـ compiler بيلزمك تبعتها.</li>
+<li dir="rtl"><strong>امتى SL أحسن؟</strong> على الحدود (Screen.builder، main، أو مكان مفيش فيه BuildContext). الحل الشائع: <code>context.read&lt;T&gt;()</code> في الـ builder وبعدين injection للـ Cubit. ده الحل الوسط الصح.</li>
+</ol></div>
+  <div class="code-card">
+    <div class="code-head" dir="ltr">
+      <span class="fname">05_service_locator_vs_di.dart</span>
+      <span class="code-actions">
+        <button type="button" class="copy-btn" data-target="code-05">Copy</button>
+        <a class="dl-btn" href="examples/05_service_locator_vs_di.dart" download>Download</a>
+      </span>
+    </div>
+    <pre dir="ltr"><code id="code-05" class="language-dart">// Service Locator vs Dependency Injection — User permissions
+// Run: dart run 05_service_locator_vs_di.dart
+//
+// In Flutter: context.read&lt;T&gt;() inside Screen.builder() is a *locate* step,
+// then the Cubit receives everything through its constructor (DI).
+
+class PermissionService {
+  PermissionService(this.role);
+
+  final String role;
+
+  bool canApproveLeave() =&gt; role == &#x27;manager&#x27; || role == &#x27;hr&#x27;;
+}
+
+// A tiny locator (what get_it does, in 15 lines).
+class Locator {
+  static final Map&lt;Type, Object&gt; _registry = {};
+
+  static void register&lt;T extends Object&gt;(T instance) =&gt; _registry[T] = instance;
+
+  static T get&lt;T extends Object&gt;() {
+    final found = _registry[T];
+    if (found == null) throw StateError(&#x27;$T is not registered&#x27;);
+    return found as T;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Service Locator style: the class PULLS its dependency. Hidden dependency —
+// you only discover it when it crashes at runtime.
+// ---------------------------------------------------------------------------
+class LeaveApprovalViewModelSL {
+  bool get showApproveButton =&gt; Locator.get&lt;PermissionService&gt;().canApproveLeave();
+}
+
+// ---------------------------------------------------------------------------
+// DI style: the dependency is PUSHED in. Visible in the constructor.
+// ---------------------------------------------------------------------------
+class LeaveApprovalViewModelDI {
+  LeaveApprovalViewModelDI(this._permissions);
+
+  final PermissionService _permissions;
+
+  bool get showApproveButton =&gt; _permissions.canApproveLeave();
+}
+
+void main() {
+  try {
+    LeaveApprovalViewModelSL().showApproveButton;
+  } on StateError catch (e) {
+    print(&#x27;SL before registration → crash at runtime: ${e.message}&#x27;);
+  }
+
+  Locator.register(PermissionService(&#x27;employee&#x27;));
+  print(&#x27;SL  → ${LeaveApprovalViewModelSL().showApproveButton}&#x27;);
+
+  // DI: you can&#x27;t even build it without giving the dependency (compile-time).
+  print(&#x27;DI  → ${LeaveApprovalViewModelDI(PermissionService(&#x27;manager&#x27;)).showApproveButton}&#x27;);
+
+  // Common Flutter compromise (what many apps do): locate once at the edge,
+  // then inject.
+  final vm = LeaveApprovalViewModelDI(Locator.get&lt;PermissionService&gt;());
+  print(&#x27;Locate at the edge + inject → ${vm.showApproveButton}&#x27;);
+}
+</code></pre>
+  </div>
+</section>
+<section class="example" id="ex-06">
+  <h2><span class="num">06</span> <bdi>Observer (Attendance board)</bdi></h2>
+  <div class="ex-explain"><ol>
+<li dir="rtl"><strong>المشكلة:</strong> الشاشة لازم تعرف أول ما حد يعمل check-in.</li>
+<li dir="rtl"><strong>قبل:</strong> polling بـ <code>Timer.periodic</code>.</li>
+<li dir="rtl"><strong>مشاكله:</strong> شغل على الفاضي، وتأخير، وبطارية.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>StreamController.broadcast()</code> + Cubit بيعمل <code>listen</code> + <code>cancel</code> في <code>close()</code>.</li>
+<li dir="rtl"><strong>الفرق:</strong> الـ subject بيبعت (push) بدل ما الـ observer يسأل (pull).</li>
+<li dir="rtl"><strong>ليه أحسن:</strong> تحديث لحظي وأكتر من observer مستقلين.</li>
+<li dir="rtl"><strong>امتى الأولى أحسن؟</strong> لو المصدر مش بيدعم notifications (REST API قديم)، الـ polling هو الحل الوحيد. حطه جوه repository يطلع Stream.</li>
+</ol></div>
+  <div class="code-card">
+    <div class="code-head" dir="ltr">
+      <span class="fname">06_observer_attendance_stream.dart</span>
+      <span class="code-actions">
+        <button type="button" class="copy-btn" data-target="code-06">Copy</button>
+        <a class="dl-btn" href="examples/06_observer_attendance_stream.dart" download>Download</a>
+      </span>
+    </div>
+    <pre dir="ltr"><code id="code-06" class="language-dart">// Observer — Live attendance board (Stream + a Cubit-like class)
+// Run: dart run 06_observer_attendance_stream.dart
+//
+// Typical Flutter shape: NetworkManager.statusStream (broadcast StreamController)
+// → NetworkCubit.listen → BlocBuilder.
+
+import &#x27;dart:async&#x27;;
+
+// ---------------------------------------------------------------------------
+// BEFORE: polling — the screen keeps asking &quot;anything new?&quot;.
+// ---------------------------------------------------------------------------
+class BeforeAttendanceSource {
+  final List&lt;String&gt; checkedIn = [];
+}
+
+Future&lt;void&gt; beforeDemo() async {
+  final source = BeforeAttendanceSource();
+  var polls = 0;
+  final timer = Timer.periodic(const Duration(milliseconds: 10), (_) {
+    polls++; // wasted work even when nothing changed
+  });
+  source.checkedIn.add(&#x27;Sara&#x27;);
+  await Future&lt;void&gt;.delayed(const Duration(milliseconds: 55));
+  timer.cancel();
+  print(&#x27;Before → polled $polls times to notice 1 change&#x27;);
+}
+
+// ---------------------------------------------------------------------------
+// AFTER: the subject pushes changes; observers subscribe/unsubscribe.
+// ---------------------------------------------------------------------------
+class AttendanceFeed {
+  final _controller = StreamController&lt;String&gt;.broadcast(); // many listeners
+
+  Stream&lt;String&gt; get checkIns =&gt; _controller.stream;
+
+  void checkIn(String name) =&gt; _controller.add(name);
+
+  Future&lt;void&gt; dispose() =&gt; _controller.close();
+}
+
+/// Minimal Cubit: holds state, notifies listeners on every emit.
+class CountCubit {
+  CountCubit(AttendanceFeed feed) {
+    _sub = feed.checkIns.listen((name) =&gt; _emit(_state + 1));
+  }
+
+  final _states = StreamController&lt;int&gt;.broadcast();
+  late final StreamSubscription&lt;String&gt; _sub;
+  int _state = 0;
+
+  Stream&lt;int&gt; get stream =&gt; _states.stream;
+
+  void _emit(int next) {
+    _state = next;
+    _states.add(next);
+  }
+
+  Future&lt;void&gt; close() async {
+    await _sub.cancel(); // always unsubscribe — do it in close()
+    await _states.close();
+  }
+}
+
+Future&lt;void&gt; main() async {
+  await beforeDemo();
+
+  final feed = AttendanceFeed();
+  final cubit = CountCubit(feed);
+
+  // Two independent observers (think: BlocBuilder + a BlocListener).
+  final ui = cubit.stream.listen((n) =&gt; print(&#x27;UI: $n employees in office&#x27;));
+  final log = feed.checkIns.listen((name) =&gt; print(&#x27;Log: $name checked in&#x27;));
+
+  feed
+    ..checkIn(&#x27;Sara&#x27;)
+    ..checkIn(&#x27;Omar&#x27;);
+  await Future&lt;void&gt;.delayed(Duration.zero);
+
+  await ui.cancel();
+  await log.cancel();
+  await cubit.close();
+  await feed.dispose();
+}
+</code></pre>
+  </div>
+</section>
+<section class="example" id="ex-07">
+  <h2><span class="num">07</span> <bdi>Strategy (Check-in methods)</bdi></h2>
+  <div class="ex-explain"><ol>
+<li dir="rtl"><strong>المشكلة:</strong> الشركات مختلفة: GPS، QR، Wi-Fi، وبكرة face-ID.</li>
+<li dir="rtl"><strong>قبل:</strong> <code>if/else</code> على اسم الطريقة.</li>
+<li dir="rtl"><strong>مشاكله:</strong> كل طريقة جديدة = تعدل نفس الـ function (بيكسر Open/Closed)، وصعب تختبر كل واحدة لوحدها.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>CheckInStrategy</code> + class لكل طريقة، أو function (<code>Verifier</code>) زي navigation hook بيتبدل حسب الـ platform.</li>
+<li dir="rtl"><strong>الفرق:</strong> الـ algorithm بقى object تقدر تبدله وقت التشغيل.</li>
+<li dir="rtl"><strong>ليه أحسن:</strong> تضيف طريقة جديدة من غير ما تلمس القديم.</li>
+<li dir="rtl"><strong>امتى الأولى أحسن؟</strong> لو هما 2-3 حالات ثابتة ومش هيزيدوا، <code>switch</code> على enum أوضح وأقصر.</li>
+</ol></div>
+  <div class="code-card">
+    <div class="code-head" dir="ltr">
+      <span class="fname">07_strategy_checkin_methods.dart</span>
+      <span class="code-actions">
+        <button type="button" class="copy-btn" data-target="code-07">Copy</button>
+        <a class="dl-btn" href="examples/07_strategy_checkin_methods.dart" download>Download</a>
+      </span>
+    </div>
+    <pre dir="ltr"><code id="code-07" class="language-dart">// Strategy — Attendance check-in methods (GPS / QR / Wi-Fi)
+// Run: dart run 07_strategy_checkin_methods.dart
+//
+// A lighter Dart variant is function-based, e.g. a static
+// AppNavigator.webPushNamed hook that the web build replaces.
+
+// ---------------------------------------------------------------------------
+// BEFORE: one method with a growing if/else. Every new method = edit here.
+// ---------------------------------------------------------------------------
+bool beforeVerify(String method, Map&lt;String, Object&gt; input) {
+  if (method == &#x27;gps&#x27;) {
+    return (input[&#x27;distanceMeters&#x27;] as int) &lt;= 100;
+  } else if (method == &#x27;qr&#x27;) {
+    return input[&#x27;qr&#x27;] == &#x27;OFFICE-2026&#x27;;
+  } else if (method == &#x27;wifi&#x27;) {
+    return input[&#x27;ssid&#x27;] == &#x27;Acme-Office&#x27;;
+  }
+  throw ArgumentError(&#x27;unknown method $method&#x27;);
+}
+
+// ---------------------------------------------------------------------------
+// AFTER (A): classic Strategy — an interface + one class per algorithm.
+// ---------------------------------------------------------------------------
+abstract interface class CheckInStrategy {
+  String get name;
+  bool verify(Map&lt;String, Object&gt; input);
+}
+
+class GpsCheckIn implements CheckInStrategy {
+  GpsCheckIn({this.maxMeters = 100});
+
+  final int maxMeters;
+
+  @override
+  String get name =&gt; &#x27;GPS&#x27;;
+
+  @override
+  bool verify(Map&lt;String, Object&gt; input) =&gt;
+      (input[&#x27;distanceMeters&#x27;] as int) &lt;= maxMeters;
+}
+
+class QrCheckIn implements CheckInStrategy {
+  @override
+  String get name =&gt; &#x27;QR&#x27;;
+
+  @override
+  bool verify(Map&lt;String, Object&gt; input) =&gt; input[&#x27;qr&#x27;] == &#x27;OFFICE-2026&#x27;;
+}
+
+class WifiCheckIn implements CheckInStrategy {
+  @override
+  String get name =&gt; &#x27;Wi-Fi&#x27;;
+
+  @override
+  bool verify(Map&lt;String, Object&gt; input) =&gt; input[&#x27;ssid&#x27;] == &#x27;Acme-Office&#x27;;
+}
+
+/// The context: does not know which algorithm it runs.
+class CheckInService {
+  CheckInService(this._strategy);
+
+  CheckInStrategy _strategy;
+
+  set strategy(CheckInStrategy s) =&gt; _strategy = s; // swap at runtime
+
+  String checkIn(Map&lt;String, Object&gt; input) =&gt;
+      &#x27;${_strategy.name}: ${_strategy.verify(input) ? &#x27;accepted&#x27; : &#x27;rejected&#x27;}&#x27;;
+}
+
+// ---------------------------------------------------------------------------
+// AFTER (B): Dart-idiomatic Strategy — just pass a function.
+// ---------------------------------------------------------------------------
+typedef Verifier = bool Function(Map&lt;String, Object&gt; input);
+
+String checkInWith(Verifier verify, Map&lt;String, Object&gt; input) =&gt;
+    verify(input) ? &#x27;accepted&#x27; : &#x27;rejected&#x27;;
+
+void main() {
+  print(&#x27;Before → ${beforeVerify(&#x27;gps&#x27;, {&#x27;distanceMeters&#x27;: 40})}&#x27;);
+
+  final service = CheckInService(GpsCheckIn());
+  print(service.checkIn({&#x27;distanceMeters&#x27;: 40}));
+  service.strategy = QrCheckIn(); // e.g. company setting changed
+  print(service.checkIn({&#x27;qr&#x27;: &#x27;WRONG&#x27;}));
+  service.strategy = WifiCheckIn();
+  print(service.checkIn({&#x27;ssid&#x27;: &#x27;Acme-Office&#x27;}));
+
+  print(&#x27;Function strategy → ${checkInWith((i) =&gt; i[&#x27;badge&#x27;] == 42, {&#x27;badge&#x27;: 42})}&#x27;);
+}
+</code></pre>
+  </div>
+</section>
+<section class="example" id="ex-08">
+  <h2><span class="num">08</span> <bdi>Adapter (Legacy HR API)</bdi></h2>
+  <div class="ex-explain"><ol>
+<li dir="rtl"><strong>المشكلة:</strong> عندك interface جاهز (<code>LeaveBalanceProvider</code>)، وجالك client قديم (Odoo) بأسماء ووحدات مختلفة.</li>
+<li dir="rtl"><strong>قبل:</strong> الشاشة بتحوّل ساعات لأيام بنفسها.</li>
+<li dir="rtl"><strong>مشاكله:</strong> التحويل متكرر في كل شاشة، والشاشة عارفة تفاصيل Odoo.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>OdooLeaveBalanceAdapter implements LeaveBalanceProvider</code>.</li>
+<li dir="rtl"><strong>الفرق:</strong> الـ adapter بيلف الـ client ويترجم.</li>
+<li dir="rtl"><strong>ليه أحسن:</strong> الشاشة مش عارفة الـ backend، وتقدر تبدّل Firestore ↔ Odoo.</li>
+<li dir="rtl"><strong>امتى الأولى أحسن؟</strong> لو استخدام واحد بس ومؤقت (migration script)، التحويل inline كفاية.</li>
+</ol></div>
+  <div class="code-card">
+    <div class="code-head" dir="ltr">
+      <span class="fname">08_adapter_legacy_hr_api.dart</span>
+      <span class="code-actions">
+        <button type="button" class="copy-btn" data-target="code-08">Copy</button>
+        <a class="dl-btn" href="examples/08_adapter_legacy_hr_api.dart" download>Download</a>
+      </span>
+    </div>
+    <pre dir="ltr"><code id="code-08" class="language-dart">// Adapter — Legacy HR API → the app&#x27;s own interface
+// Run: dart run 08_adapter_legacy_hr_api.dart
+//
+// Other Flutter examples: a route bridge (named routes → go_router) and
+// SearchResultItem.fromPost/fromQuestion/... (many types → 1 row type).
+
+// The app&#x27;s interface (what every screen already uses).
+abstract interface class LeaveBalanceProvider {
+  /// Remaining annual leave in days.
+  Future&lt;double&gt; remainingDays(String employeeId);
+}
+
+// Our existing, clean implementation.
+class FirestoreLeaveBalance implements LeaveBalanceProvider {
+  @override
+  Future&lt;double&gt; remainingDays(String employeeId) async =&gt; 12;
+}
+
+// A third-party / legacy client we cannot change. Different names, different
+// units (hours), different id format.
+class LegacyOdooHrClient {
+  Future&lt;Map&lt;String, dynamic&gt;&gt; getAllocation({required int empNo}) async =&gt;
+      {&#x27;emp_no&#x27;: empNo, &#x27;remaining_hours&#x27;: 64.0, &#x27;hours_per_day&#x27;: 8.0};
+}
+
+// ---------------------------------------------------------------------------
+// BEFORE: the screen calls the legacy client directly and converts units.
+// Every screen that needs the balance repeats this.
+// ---------------------------------------------------------------------------
+Future&lt;String&gt; beforeScreen(LegacyOdooHrClient client, String employeeId) async {
+  final raw = await client.getAllocation(empNo: int.parse(employeeId.substring(1)));
+  final days = (raw[&#x27;remaining_hours&#x27;] as double) / (raw[&#x27;hours_per_day&#x27;] as double);
+  return &#x27;Before → $days days&#x27;;
+}
+
+// ---------------------------------------------------------------------------
+// AFTER: an adapter that makes the legacy client look like our interface.
+// ---------------------------------------------------------------------------
+class OdooLeaveBalanceAdapter implements LeaveBalanceProvider {
+  OdooLeaveBalanceAdapter(this._client);
+
+  final LegacyOdooHrClient _client; // wraps (composition), delegates
+
+  @override
+  Future&lt;double&gt; remainingDays(String employeeId) async {
+    final raw = await _client.getAllocation(empNo: _toEmpNo(employeeId));
+    return (raw[&#x27;remaining_hours&#x27;] as double) / (raw[&#x27;hours_per_day&#x27;] as double);
+  }
+
+  int _toEmpNo(String id) =&gt; int.parse(id.replaceFirst(&#x27;E&#x27;, &#x27;&#x27;));
+}
+
+// The screen never knows which backend it talks to.
+Future&lt;String&gt; leaveScreen(LeaveBalanceProvider provider) async =&gt;
+    &#x27;After  → ${await provider.remainingDays(&#x27;E1001&#x27;)} days&#x27;;
+
+Future&lt;void&gt; main() async {
+  print(await beforeScreen(LegacyOdooHrClient(), &#x27;E1001&#x27;));
+  print(await leaveScreen(FirestoreLeaveBalance()));
+  print(await leaveScreen(OdooLeaveBalanceAdapter(LegacyOdooHrClient())));
+}
+</code></pre>
+  </div>
+</section>
+<section class="example" id="ex-09">
+  <h2><span class="num">09</span> <bdi>Facade (Auth)</bdi></h2>
+  <div class="ex-explain"><ol>
+<li dir="rtl"><strong>المشكلة:</strong> الـ login محتاج Auth + FCM token + Firestore + error codes.</li>
+<li dir="rtl"><strong>قبل:</strong> الشاشة بتنسق الـ 3 SDKs.</li>
+<li dir="rtl"><strong>مشاكله:</strong> منطق مكرر في Login و Register، والـ UI معتمد على SDKs.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>AuthFacade.signIn()</code> بيرجع <code>SignedIn</code> / <code>SignInFailed</code>.</li>
+<li dir="rtl"><strong>الفرق:</strong> واجهة واحدة بسيطة.</li>
+<li dir="rtl"><strong>ليه أحسن:</strong> <code>AuthService</code> عادي بيبسّط، بس لو بيرجع <code>UserCredential</code> من Firebase العزل ناقص. النسخة هنا بترجع types بتاعتك فهي <strong>بتعزل</strong> كمان.</li>
+<li dir="rtl"><strong>امتى الأولى أحسن؟</strong> لو هي call واحدة لـ SDK واحد، الـ facade مجرد طبقة زيادة.</li>
+</ol></div>
+  <div class="code-card">
+    <div class="code-head" dir="ltr">
+      <span class="fname">09_facade_auth.dart</span>
+      <span class="code-actions">
+        <button type="button" class="copy-btn" data-target="code-09">Copy</button>
+        <a class="dl-btn" href="examples/09_facade_auth.dart" download>Download</a>
+      </span>
+    </div>
+    <pre dir="ltr"><code id="code-09" class="language-dart">// Facade — Authentication
+// Run: dart run 09_facade_auth.dart
+//
+// Typical Flutter AuthService rule:
+// &quot;UI must never import firebase_auth directly&quot;.
+
+// Pretend these are three separate SDKs.
+class FakeFirebaseAuth {
+  Future&lt;String&gt; signInWithEmailAndPassword(String email, String password) async {
+    if (password.length &lt; 6) throw Exception(&#x27;[firebase_auth/wrong-password]&#x27;);
+    return &#x27;uid-123&#x27;;
+  }
+}
+
+class FakeFcm {
+  Future&lt;String&gt; getToken() async =&gt; &#x27;fcm-token-xyz&#x27;;
+}
+
+class FakeFirestore {
+  final Map&lt;String, Map&lt;String, Object&gt;&gt; docs = {};
+
+  Future&lt;void&gt; set(String path, Map&lt;String, Object&gt; data) async =&gt; docs[path] = data;
+}
+
+// ---------------------------------------------------------------------------
+// BEFORE: the login screen orchestrates 3 SDKs + error codes itself.
+// ---------------------------------------------------------------------------
+Future&lt;String&gt; beforeLoginScreen(String email, String password) async {
+  final auth = FakeFirebaseAuth();
+  final fcm = FakeFcm();
+  final db = FakeFirestore();
+  try {
+    final uid = await auth.signInWithEmailAndPassword(email.trim(), password);
+    final token = await fcm.getToken();
+    await db.set(&#x27;users/$uid/fcmTokens/$token&#x27;, {&#x27;createdAt&#x27;: &#x27;now&#x27;});
+    return &#x27;Before → signed in $uid&#x27;;
+  } catch (e) {
+    return e.toString().contains(&#x27;wrong-password&#x27;) ? &#x27;Wrong password&#x27; : &#x27;Error&#x27;;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// AFTER: one simple entry point; the UI knows nothing about the SDKs.
+// ---------------------------------------------------------------------------
+sealed class SignInResult {}
+
+class SignedIn extends SignInResult {
+  SignedIn(this.uid);
+
+  final String uid;
+}
+
+class SignInFailed extends SignInResult {
+  SignInFailed(this.message);
+
+  final String message;
+}
+
+class AuthFacade {
+  AuthFacade({FakeFirebaseAuth? auth, FakeFcm? fcm, FakeFirestore? db})
+      : _auth = auth ?? FakeFirebaseAuth(),
+        _fcm = fcm ?? FakeFcm(),
+        _db = db ?? FakeFirestore();
+
+  final FakeFirebaseAuth _auth;
+  final FakeFcm _fcm;
+  final FakeFirestore _db;
+
+  Future&lt;SignInResult&gt; signIn(String email, String password) async {
+    try {
+      final uid = await _auth.signInWithEmailAndPassword(email.trim(), password);
+      await _registerPushToken(uid);
+      return SignedIn(uid);
+    } catch (e) {
+      return SignInFailed(_mapError(e));
+    }
+  }
+
+  Future&lt;void&gt; _registerPushToken(String uid) async {
+    final token = await _fcm.getToken();
+    await _db.set(&#x27;users/$uid/fcmTokens/$token&#x27;, {&#x27;createdAt&#x27;: &#x27;now&#x27;});
+  }
+
+  String _mapError(Object e) =&gt;
+      e.toString().contains(&#x27;wrong-password&#x27;) ? &#x27;Wrong password&#x27; : &#x27;Something went wrong&#x27;;
+}
+
+Future&lt;void&gt; main() async {
+  print(await beforeLoginScreen(&#x27;a@acme.com&#x27;, &#x27;secret1&#x27;));
+
+  final auth = AuthFacade();
+  for (final pass in [&#x27;secret1&#x27;, &#x27;123&#x27;]) {
+    final result = await auth.signIn(&#x27;a@acme.com&#x27;, pass);
+    print(switch (result) {
+      SignedIn(:final uid) =&gt; &#x27;After  → signed in $uid&#x27;,
+      SignInFailed(:final message) =&gt; &#x27;After  → $message&#x27;,
+    });
+  }
+}
+</code></pre>
+  </div>
+</section>
+<section class="example" id="ex-10">
+  <h2><span class="num">10</span> <bdi>Decorator (Cached + Logging repository)</bdi></h2>
+  <div class="ex-explain"><ol>
+<li dir="rtl"><strong>المشكلة:</strong> عايز cache و logging على repository موجود من غير ما تعدله.</li>
+<li dir="rtl"><strong>قبل:</strong> كل الـ concerns جوه class واحد.</li>
+<li dir="rtl"><strong>مشاكله:</strong> الـ class بيكبر، ومش تقدر تقفل الـ logging في production بسهولة.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>LoggingStatsRepository(CachedStatsRepository(remote))</code>، كلهم نفس الـ interface.</li>
+<li dir="rtl"><strong>الفرق:</strong> كل concern في wrapper لوحده وتقدر ترصّهم.</li>
+<li dir="rtl"><strong>ليه أحسن:</strong> Single Responsibility، وتختار التركيبة في الـ composition root.</li>
+<li dir="rtl"><strong>امتى الأولى أحسن؟</strong> لو concern واحد صغير ومش هيتشال، حطه جوه علطول.</li>
+</ol></div>
+  <div class="code-card">
+    <div class="code-head" dir="ltr">
+      <span class="fname">10_decorator_cached_repository.dart</span>
+      <span class="code-actions">
+        <button type="button" class="copy-btn" data-target="code-10">Copy</button>
+        <a class="dl-btn" href="examples/10_decorator_cached_repository.dart" download>Download</a>
+      </span>
+    </div>
+    <pre dir="ltr"><code id="code-10" class="language-dart">// Decorator — add caching + logging to a repository without editing it
+// Run: dart run 10_decorator_cached_repository.dart
+//
+// Widget wrappers like
+// PushNotificationListener(child: ...) are the Flutter-composition cousin.
+
+abstract interface class DashboardStatsRepository {
+  Future&lt;int&gt; activeEmployees(String companyId);
+}
+
+class RemoteDashboardStatsRepository implements DashboardStatsRepository {
+  int calls = 0;
+
+  @override
+  Future&lt;int&gt; activeEmployees(String companyId) async {
+    calls++;
+    await Future&lt;void&gt;.delayed(const Duration(milliseconds: 20)); // network
+    return 42;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// BEFORE: caching + logging pasted inside the remote class (or in each cubit).
+// Every new concern makes the class bigger; you can&#x27;t turn one off.
+// ---------------------------------------------------------------------------
+class BeforeStatsRepository {
+  final Map&lt;String, int&gt; _cache = {};
+
+  Future&lt;int&gt; activeEmployees(String companyId) async {
+    print(&#x27;[log] activeEmployees($companyId)&#x27;);
+    final hit = _cache[companyId];
+    if (hit != null) return hit;
+    await Future&lt;void&gt;.delayed(const Duration(milliseconds: 20));
+    return _cache[companyId] = 42;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// AFTER: each concern is a wrapper with the SAME interface.
+// ---------------------------------------------------------------------------
+class CachedStatsRepository implements DashboardStatsRepository {
+  CachedStatsRepository(this._inner);
+
+  final DashboardStatsRepository _inner;
+  final Map&lt;String, int&gt; _cache = {};
+
+  @override
+  Future&lt;int&gt; activeEmployees(String companyId) async =&gt;
+      _cache[companyId] ??= await _inner.activeEmployees(companyId);
+}
+
+class LoggingStatsRepository implements DashboardStatsRepository {
+  LoggingStatsRepository(this._inner);
+
+  final DashboardStatsRepository _inner;
+
+  @override
+  Future&lt;int&gt; activeEmployees(String companyId) async {
+    final sw = Stopwatch()..start();
+    final result = await _inner.activeEmployees(companyId);
+    print(&#x27;[log] activeEmployees($companyId) = $result in ${sw.elapsedMilliseconds}ms&#x27;);
+    return result;
+  }
+}
+
+Future&lt;void&gt; main() async {
+  await BeforeStatsRepository().activeEmployees(&#x27;acme&#x27;);
+
+  final remote = RemoteDashboardStatsRepository();
+  // Stack them in any order; the cubit only sees DashboardStatsRepository.
+  final DashboardStatsRepository repo = LoggingStatsRepository(CachedStatsRepository(remote));
+  await repo.activeEmployees(&#x27;acme&#x27;);
+  await repo.activeEmployees(&#x27;acme&#x27;); // served from cache, much faster
+  print(&#x27;Remote was called ${remote.calls} time(s)&#x27;);
+}
+</code></pre>
+  </div>
+</section>
+<section class="example" id="ex-11">
+  <h2><span class="num">11</span> <bdi>Command (Offline queue + undo)</bdi></h2>
+  <div class="ex-explain"><ol>
+<li dir="rtl"><strong>المشكلة:</strong> الموظف عمل check-in والنت فاصل.</li>
+<li dir="rtl"><strong>قبل:</strong> الطلب بيضيع.</li>
+<li dir="rtl"><strong>مشاكله:</strong> فقد بيانات، ومفيش retry ولا undo.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>CheckInCommand</code> (execute/undo) + <code>CommandQueue</code> (queue + flush + history).</li>
+<li dir="rtl"><strong>الفرق:</strong> العملية بقت object.</li>
+<li dir="rtl"><strong>ليه أحسن:</strong> queue، retry، logging، undo.</li>
+<li dir="rtl"><strong>امتى الأولى أحسن؟</strong> لو الـ backend نفسه بيعمل offline queue (Firestore بيعمل كده)، الـ command queue بتاعك ممكن يبقى تكرار.</li>
+</ol></div>
+  <div class="code-card">
+    <div class="code-head" dir="ltr">
+      <span class="fname">11_command_offline_queue.dart</span>
+      <span class="code-actions">
+        <button type="button" class="copy-btn" data-target="code-11">Copy</button>
+        <a class="dl-btn" href="examples/11_command_offline_queue.dart" download>Download</a>
+      </span>
+    </div>
+    <pre dir="ltr"><code id="code-11" class="language-dart">// Command — Offline attendance queue (+ undo)
+// Run: dart run 11_command_offline_queue.dart
+//
+// Typical Flutter shape: a NetworkRequestQueue that stores closures and
+// replays them on reconnect.
+
+// ---------------------------------------------------------------------------
+// BEFORE: the action runs immediately. If offline, it&#x27;s just lost.
+// ---------------------------------------------------------------------------
+Future&lt;void&gt; beforeCheckIn(bool online, String employee) async {
+  if (!online) {
+    print(&#x27;Before → offline, check-in for $employee LOST&#x27;);
+    return;
+  }
+  print(&#x27;Before → sent check-in for $employee&#x27;);
+}
+
+// ---------------------------------------------------------------------------
+// AFTER: each action is an object → can be queued, retried, logged, undone.
+// ---------------------------------------------------------------------------
+abstract interface class AttendanceCommand {
+  String get label;
+  Future&lt;void&gt; execute();
+  Future&lt;void&gt; undo();
+}
+
+class FakeAttendanceApi {
+  final List&lt;String&gt; records = [];
+}
+
+class CheckInCommand implements AttendanceCommand {
+  CheckInCommand(this._api, this.employee, this.at);
+
+  final FakeAttendanceApi _api;
+  final String employee;
+  final DateTime at;
+
+  @override
+  String get label =&gt; &#x27;check-in $employee @ ${at.hour}:${at.minute.toString().padLeft(2, &#x27;0&#x27;)}&#x27;;
+
+  @override
+  Future&lt;void&gt; execute() async =&gt; _api.records.add(label);
+
+  @override
+  Future&lt;void&gt; undo() async =&gt; _api.records.remove(label);
+}
+
+class CommandQueue {
+  final List&lt;AttendanceCommand&gt; _pending = [];
+  final List&lt;AttendanceCommand&gt; _history = [];
+
+  Future&lt;void&gt; run(AttendanceCommand c, {required bool online}) async {
+    if (!online) {
+      _pending.add(c);
+      print(&#x27;After  → queued &quot;${c.label}&quot; (${_pending.length} pending)&#x27;);
+      return;
+    }
+    await c.execute();
+    _history.add(c);
+  }
+
+  Future&lt;void&gt; flush() async {
+    final copy = List.of(_pending);
+    _pending.clear();
+    for (final c in copy) {
+      await c.execute();
+      _history.add(c);
+      print(&#x27;After  → replayed &quot;${c.label}&quot;&#x27;);
+    }
+  }
+
+  Future&lt;void&gt; undoLast() async {
+    if (_history.isEmpty) return;
+    final c = _history.removeLast();
+    await c.undo();
+    print(&#x27;After  → undid &quot;${c.label}&quot;&#x27;);
+  }
+}
+
+Future&lt;void&gt; main() async {
+  await beforeCheckIn(false, &#x27;Sara&#x27;);
+
+  final api = FakeAttendanceApi();
+  final queue = CommandQueue();
+  await queue.run(CheckInCommand(api, &#x27;Sara&#x27;, DateTime(2026, 1, 1, 8, 55)), online: false);
+  await queue.run(CheckInCommand(api, &#x27;Omar&#x27;, DateTime(2026, 1, 1, 9, 2)), online: false);
+  await queue.flush(); // connection is back
+  await queue.undoLast(); // HR fixes a mistake
+  print(&#x27;Saved records: ${api.records}&#x27;);
+}
+</code></pre>
+  </div>
+</section>
+<section class="example" id="ex-12">
+  <h2><span class="num">12</span> <bdi>State (Leave request)</bdi></h2>
+  <div class="ex-explain"><ol>
+<li dir="rtl"><strong>المشكلة:</strong> كل حالة (Draft/Submitted/Approved/Rejected) ليها actions مسموحة مختلفة.</li>
+<li dir="rtl"><strong>قبل:</strong> <code>enum</code> + <code>if</code> في كل method.</li>
+<li dir="rtl"><strong>مشاكله:</strong> سهل تنسى حالة. الـ demo بيوري إن approved leave رجع draft.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>sealed class LeaveState</code>، وكل state بيقرر الـ transitions بتاعته.</li>
+<li dir="rtl"><strong>الفرق:</strong> القواعد جوه الـ state نفسه.</li>
+<li dir="rtl"><strong>ليه أحسن:</strong> transition غلط = error واضح، وإضافة state جديد مش بتلمس القديم.</li>
+<li dir="rtl"><strong>امتى الأولى أحسن؟</strong> حالات UI بسيطة (idle/loading/success/error): الـ enum كفاية وأوضح.</li>
+</ol></div>
+  <div class="code-card">
+    <div class="code-head" dir="ltr">
+      <span class="fname">12_state_leave_request.dart</span>
+      <span class="code-actions">
+        <button type="button" class="copy-btn" data-target="code-12">Copy</button>
+        <a class="dl-btn" href="examples/12_state_leave_request.dart" download>Download</a>
+      </span>
+    </div>
+    <pre dir="ltr"><code id="code-12" class="language-dart">// State (GoF) vs enum status — Leave request workflow
+// Run: dart run 12_state_leave_request.dart
+//
+// Many apps use enum statuses (e.g. AuthUiStatus { idle, loading, success, error }).
+// That is fine for UI status. The GoF State pattern pays off when each state
+// has DIFFERENT allowed actions.
+
+// ---------------------------------------------------------------------------
+// BEFORE: enum + switch in every method. Rules are scattered.
+// ---------------------------------------------------------------------------
+enum LeaveStatus { draft, submitted, approved, rejected }
+
+class BeforeLeaveRequest {
+  LeaveStatus status = LeaveStatus.draft;
+
+  void submit() {
+    if (status != LeaveStatus.draft) throw StateError(&#x27;Only drafts can be submitted&#x27;);
+    status = LeaveStatus.submitted;
+  }
+
+  void approve() {
+    if (status != LeaveStatus.submitted) throw StateError(&#x27;Only submitted can be approved&#x27;);
+    status = LeaveStatus.approved;
+  }
+
+  void cancel() {
+    // Easy to forget a case: should an approved leave be cancellable?
+    if (status == LeaveStatus.rejected) throw StateError(&#x27;Already rejected&#x27;);
+    status = LeaveStatus.draft;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// AFTER: each state is an object that decides what each action does.
+// ---------------------------------------------------------------------------
+sealed class LeaveState {
+  const LeaveState();
+
+  String get label;
+  LeaveState submit() =&gt; throw StateError(&#x27;Cannot submit when $label&#x27;);
+  LeaveState approve() =&gt; throw StateError(&#x27;Cannot approve when $label&#x27;);
+  LeaveState reject() =&gt; throw StateError(&#x27;Cannot reject when $label&#x27;);
+  LeaveState cancel() =&gt; throw StateError(&#x27;Cannot cancel when $label&#x27;);
+}
+
+class Draft extends LeaveState {
+  const Draft();
+
+  @override
+  String get label =&gt; &#x27;Draft&#x27;;
+
+  @override
+  LeaveState submit() =&gt; const Submitted();
+}
+
+class Submitted extends LeaveState {
+  const Submitted();
+
+  @override
+  String get label =&gt; &#x27;Submitted&#x27;;
+
+  @override
+  LeaveState approve() =&gt; const Approved();
+
+  @override
+  LeaveState reject() =&gt; const Rejected();
+
+  @override
+  LeaveState cancel() =&gt; const Draft();
+}
+
+class Approved extends LeaveState {
+  const Approved();
+
+  @override
+  String get label =&gt; &#x27;Approved&#x27;;
+}
+
+class Rejected extends LeaveState {
+  const Rejected();
+
+  @override
+  String get label =&gt; &#x27;Rejected&#x27;;
+}
+
+class LeaveRequest {
+  LeaveState _state = const Draft();
+
+  String get status =&gt; _state.label;
+
+  void submit() =&gt; _state = _state.submit();
+  void approve() =&gt; _state = _state.approve();
+  void reject() =&gt; _state = _state.reject();
+  void cancel() =&gt; _state = _state.cancel();
+}
+
+void main() {
+  final before = BeforeLeaveRequest()
+    ..submit()
+    ..approve()
+    ..cancel(); // bug: approved leave silently went back to draft
+  print(&#x27;Before → ${before.status.name} (should not be allowed)&#x27;);
+
+  final leave = LeaveRequest()
+    ..submit()
+    ..approve();
+  print(&#x27;After  → ${leave.status}&#x27;);
+  try {
+    leave.cancel();
+  } on StateError catch (e) {
+    print(&#x27;After  → ${e.message}&#x27;);
+  }
+}
+</code></pre>
+  </div>
+</section>
+<section class="example" id="ex-13">
+  <h2><span class="num">13</span> <bdi>Builder (Report request)</bdi></h2>
+  <div class="ex-explain"><ol>
+<li dir="rtl"><strong>المشكلة:</strong> request بـ parts كتير اختيارية.</li>
+<li dir="rtl"><strong>قبل:</strong> constructor بـ 7 positional args.</li>
+<li dir="rtl"><strong>مشاكله:</strong> <code>true, false</code> معناهم إيه؟ سهل تبدلهم، والـ validation متفرق.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>ReportRequestBuilder('acme').between(...).department('HR').onlyLateArrivals().build()</code>.</li>
+<li dir="rtl"><strong>الفرق:</strong> بناء خطوة بخطوة + validation مرة واحدة في <code>build()</code>.</li>
+<li dir="rtl"><strong>ليه أحسن:</strong> مقروء، وبيمنع objects ناقصة.</li>
+<li dir="rtl"><strong>امتى الأولى أحسن؟</strong> في Dart، <strong>named parameters</strong> + <code>required</code> بيحلوا 80% من المشكلة. الـ Builder يستاهل لو البناء نفسه على مراحل أو فيه validation بين الحقول.</li>
+</ol></div>
+  <div class="code-card">
+    <div class="code-head" dir="ltr">
+      <span class="fname">13_builder_report_request.dart</span>
+      <span class="code-actions">
+        <button type="button" class="copy-btn" data-target="code-13">Copy</button>
+        <a class="dl-btn" href="examples/13_builder_report_request.dart" download>Download</a>
+      </span>
+    </div>
+    <pre dir="ltr"><code id="code-13" class="language-dart">// Builder — Attendance report request with many optional parts
+// Run: dart run 13_builder_report_request.dart
+//
+// Note: a screen&#x27;s `static Widget builder(BuildContext)` on screens is a static
+// FACTORY, not this pattern. BlocBuilder/LayoutBuilder are not GoF Builder either.
+
+// ---------------------------------------------------------------------------
+// BEFORE: a constructor with many positional/optional args.
+// ---------------------------------------------------------------------------
+class BeforeReportRequest {
+  BeforeReportRequest(this.companyId, this.from, this.to, this.dept, this.onlyLate,
+      this.includeWeekends, this.format);
+
+  final String companyId;
+  final DateTime from;
+  final DateTime to;
+  final String? dept;
+  final bool onlyLate;
+  final bool includeWeekends;
+  final String format;
+}
+
+// ---------------------------------------------------------------------------
+// AFTER: build step by step, validate once in build().
+// ---------------------------------------------------------------------------
+class ReportRequest {
+  const ReportRequest._(this.query);
+
+  final Map&lt;String, String&gt; query;
+
+  @override
+  String toString() =&gt; &#x27;/reports/attendance?${query.entries.map((e) =&gt; &#x27;${e.key}=${e.value}&#x27;).join(&#x27;&amp;&#x27;)}&#x27;;
+}
+
+class ReportRequestBuilder {
+  ReportRequestBuilder(this._companyId);
+
+  final String _companyId;
+  DateTime? _from;
+  DateTime? _to;
+  String? _dept;
+  bool _onlyLate = false;
+  String _format = &#x27;pdf&#x27;;
+
+  ReportRequestBuilder between(DateTime from, DateTime to) {
+    _from = from;
+    _to = to;
+    return this;
+  }
+
+  ReportRequestBuilder department(String dept) {
+    _dept = dept;
+    return this;
+  }
+
+  ReportRequestBuilder onlyLateArrivals() {
+    _onlyLate = true;
+    return this;
+  }
+
+  ReportRequestBuilder asExcel() {
+    _format = &#x27;xlsx&#x27;;
+    return this;
+  }
+
+  ReportRequest build() {
+    final from = _from, to = _to;
+    if (from == null || to == null) throw StateError(&#x27;Date range is required&#x27;);
+    if (to.isBefore(from)) throw StateError(&#x27;&quot;to&quot; is before &quot;from&quot;&#x27;);
+    String d(DateTime x) =&gt; x.toIso8601String().substring(0, 10);
+    return ReportRequest._({
+      &#x27;company&#x27;: _companyId,
+      &#x27;from&#x27;: d(from),
+      &#x27;to&#x27;: d(to),
+      if (_dept != null) &#x27;dept&#x27;: _dept!,
+      if (_onlyLate) &#x27;late&#x27;: &#x27;true&#x27;,
+      &#x27;format&#x27;: _format,
+    });
+  }
+}
+
+void main() {
+  // Before: what do `true, false` mean? Easy to swap them by mistake.
+  final b = BeforeReportRequest(&#x27;acme&#x27;, DateTime(2026, 1, 1), DateTime(2026, 1, 31), null, true, false, &#x27;pdf&#x27;);
+  print(&#x27;Before → onlyLate=${b.onlyLate} includeWeekends=${b.includeWeekends}&#x27;);
+
+  final request = ReportRequestBuilder(&#x27;acme&#x27;)
+      .between(DateTime(2026, 1, 1), DateTime(2026, 1, 31))
+      .department(&#x27;HR&#x27;)
+      .onlyLateArrivals()
+      .asExcel()
+      .build();
+  print(&#x27;After  → $request&#x27;);
+
+  try {
+    ReportRequestBuilder(&#x27;acme&#x27;).department(&#x27;HR&#x27;).build();
+  } on StateError catch (e) {
+    print(&#x27;After  → ${e.message}&#x27;);
+  }
+}
+</code></pre>
+  </div>
+</section>
+<section class="example" id="ex-14">
+  <h2><span class="num">14</span> <bdi>Result (Error handling)</bdi></h2>
+  <div class="ex-explain"><ol>
+<li dir="rtl"><strong>المشكلة:</strong> الـ function ممكن تفشل، بس الـ signature مش بيقول كده.</li>
+<li dir="rtl"><strong>قبل:</strong> <code>Future&lt;double&gt;</code> بيرمي exception.</li>
+<li dir="rtl"><strong>مشاكله:</strong> لو نسيت <code>try/catch</code> مرة = crash.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>Future&lt;Result&lt;double&gt;&gt;</code> + <code>sealed</code> + <code>switch</code> exhaustive.</li>
+<li dir="rtl"><strong>الفرق:</strong> الفشل بقى قيمة عادية الـ compiler بيلزمك تتعامل معاها.</li>
+<li dir="rtl"><strong>ليه أحسن:</strong> لو عندك <code>Failure</code> classes، الـ Result هو الخطوة اللي جاية.</li>
+<li dir="rtl"><strong>امتى الأولى أحسن؟</strong> الأخطاء النادرة جداً (bugs، <code>StateError</code>) خليها exceptions. الـ Result للأخطاء المتوقعة (network، permission).</li>
+</ol></div>
+  <div class="code-card">
+    <div class="code-head" dir="ltr">
+      <span class="fname">14_result_error_handling.dart</span>
+      <span class="code-actions">
+        <button type="button" class="copy-btn" data-target="code-14">Copy</button>
+        <a class="dl-btn" href="examples/14_result_error_handling.dart" download>Download</a>
+      </span>
+    </div>
+    <pre dir="ltr"><code id="code-14" class="language-dart">// Result type — errors as values (Flutter docs &quot;Result&quot; pattern)
+// Run: dart run 14_result_error_handling.dart
+//
+// Common today: services throw → Cubit catches → ErrorHandler.handle(e)
+// → Failure.
+// The Failure classes exist; a Result wrapper is the next step.
+
+class Failure {
+  const Failure(this.message);
+
+  final String message;
+}
+
+class FakeApi {
+  Future&lt;double&gt; fetchSalary(String id) async {
+    if (id == &#x27;bad&#x27;) throw Exception(&#x27;permission-denied&#x27;);
+    return 9000;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// BEFORE: the signature says &quot;returns double&quot; but it can also throw.
+// Forget the try/catch once → crash.
+// ---------------------------------------------------------------------------
+Future&lt;String&gt; beforeCubit(FakeApi api, String id) async {
+  final salary = await api.fetchSalary(id); // nothing forces you to catch
+  return &#x27;Before → $salary&#x27;;
+}
+
+// ---------------------------------------------------------------------------
+// AFTER: the signature says success OR failure. The compiler makes you
+// handle both (sealed + exhaustive switch).
+// ---------------------------------------------------------------------------
+sealed class Result&lt;T&gt; {
+  const Result();
+}
+
+class Ok&lt;T&gt; extends Result&lt;T&gt; {
+  const Ok(this.value);
+
+  final T value;
+}
+
+class Err&lt;T&gt; extends Result&lt;T&gt; {
+  const Err(this.failure);
+
+  final Failure failure;
+}
+
+class SalaryRepository {
+  SalaryRepository(this._api);
+
+  final FakeApi _api;
+
+  Future&lt;Result&lt;double&gt;&gt; salary(String id) async {
+    try {
+      return Ok(await _api.fetchSalary(id));
+    } catch (e) {
+      final denied = e.toString().contains(&#x27;permission-denied&#x27;);
+      return Err(Failure(denied ? &#x27;You are not allowed to see this salary&#x27; : &#x27;Try again&#x27;));
+    }
+  }
+}
+
+Future&lt;void&gt; main() async {
+  try {
+    print(await beforeCubit(FakeApi(), &#x27;bad&#x27;));
+  } catch (e) {
+    print(&#x27;Before → uncaught: $e&#x27;);
+  }
+
+  final repo = SalaryRepository(FakeApi());
+  for (final id in [&#x27;e1&#x27;, &#x27;bad&#x27;]) {
+    final text = switch (await repo.salary(id)) {
+      Ok(:final value) =&gt; &#x27;After  → salary $value&#x27;,
+      Err(:final failure) =&gt; &#x27;After  → ${failure.message}&#x27;,
+    };
+    print(text);
+  }
+}
+</code></pre>
+  </div>
+</section><section class="example" id="wiring"><h3 id="flutter-wiring-إزاي-توصل-أي-مثال-بـ-flutter"><bdi>Flutter wiring (إزاي توصل أي مثال بـ Flutter)</bdi></h3>
+<pre dir="ltr"><code class="language-dart">MultiRepositoryProvider(
+  providers: [
+    RepositoryProvider&lt;EmployeeRepository&gt;(
+      create: (_) =&gt; FirestoreEmployeeRepository(EmployeeRemoteDataSource(FirebaseFirestore.instance)),
+    ),
+  ],
+  child: BlocProvider(
+    create: (c) =&gt; ProfileCubit(c.read&lt;EmployeeRepository&gt;()), // depends on the interface
+    child: const ProfileScreen(),
+  ),
+);
+</code></pre></section></main>
+</div>
+<footer class="footer">
+  <p>محتوى تعليمي عام عن الـ Design Patterns في Flutter و Dart. المصادر الأصلية مذكورة جنب كل جزء.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dart.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

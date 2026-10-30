@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://dobydragon.github.io/flutter-design-patterns/sitemap.xml

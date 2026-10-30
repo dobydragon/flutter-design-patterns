@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>أسئلة الـ Interview · Flutter Design Patterns</title>
+<meta name="description" content="أسئلة Design Patterns في مقابلات Flutter من Junior لـ Senior، بإجابة إنجليزي وفكرة بالمصري.">
+<meta property="og:title" content="أسئلة الـ Interview · Flutter Design Patterns">
+<meta property="og:description" content="أسئلة Design Patterns في مقابلات Flutter من Junior لـ Senior، بإجابة إنجليزي وفكرة بالمصري.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://dobydragon.github.io/flutter-design-patterns/interview.html">
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+
+</head>
+<body>
+<a class="skip" href="#content">تخطى للمحتوى</a>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html"><img src="icons/favicon.svg" alt="" width="28" height="28"><bdi>Flutter Design Patterns</bdi></a>
+    <button class="menu-btn" aria-expanded="false" aria-controls="nav" aria-label="القائمة">☰</button>
+    <nav id="nav" class="nav"><a href="index.html">الرئيسية</a><a href="guide.html">الدليل</a><a href="examples.html">الأمثلة</a><a href="interview.html" aria-current="page">أسئلة الـ Interview</a><a href="roadmap.html">خطة المذاكرة</a></nav>
+    <button class="theme-btn" type="button" aria-label="تبديل الوضع الليلي">◐</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" aria-label="المحتويات">
+    <details class="toc-box" open>
+      <summary>المحتويات</summary>
+      <ul class="toc"><li class="l2"><a href="#junior"><bdi>🟢 Junior</bdi></a><ul><li class="l3"><a href="#j1-what-is-a-design-pattern"><span class="num">J1</span> <bdi>What is a design pattern?</bdi></a></li><li class="l3"><a href="#j2-design-pattern-vs-architecture"><span class="num">J2</span> <bdi>Design pattern vs architecture?</bdi></a></li><li class="l3"><a href="#j3-what-is-a-singleton-and-give-a-flutter-example"><span class="num">J3</span> <bdi>What is a Singleton and give a Flutter example?</bdi></a></li><li class="l3"><a href="#j4-whats-a-factory-constructor-in-dart"><span class="num">J4</span> <bdi>What&#x27;s a factory constructor in Dart?</bdi></a></li><li class="l3"><a href="#j5-what-is-the-observer-pattern-where-is-it-in-flutter"><span class="num">J5</span> <bdi>What is the Observer pattern? Where is it in Flutter?</bdi></a></li><li class="l3"><a href="#j6-why-should-ui-not-call-firebase-directly"><span class="num">J6</span> <bdi>Why should UI not call Firebase directly?</bdi></a></li><li class="l3"><a href="#j7-what-is-copywith-and-why-do-states-use-it"><span class="num">J7</span> <bdi>What is copyWith and why do states use it?</bdi></a></li></ul></li><li class="l2"><a href="#mid-level"><bdi>🟡 Mid-level</bdi></a><ul><li class="l3"><a href="#m1-explain-dependency-injection-and-how-you-did-it-in-flutter"><span class="num">M1</span> <bdi>Explain Dependency Injection and how you did it in Flutter.</bdi></a></li><li class="l3"><a href="#m2-di-vs-service-locator"><span class="num">M2</span> <bdi>DI vs Service Locator?</bdi></a></li><li class="l3"><a href="#m3-what-is-the-repository-pattern-is-a-class-called-repository-enough"><span class="num">M3</span> <bdi>What is the Repository pattern? Is a class called &quot;Repository&quot; enough?</bdi></a></li><li class="l3"><a href="#m4-repository-vs-data-source-vs-service"><span class="num">M4</span> <bdi>Repository vs Data Source vs Service?</bdi></a></li><li class="l3"><a href="#m5-what-is-a-facade-example"><span class="num">M5</span> <bdi>What is a Facade? Example?</bdi></a></li><li class="l3"><a href="#m6-strategy-vs-ifelse"><span class="num">M6</span> <bdi>Strategy vs if/else?</bdi></a></li><li class="l3"><a href="#m7-how-do-you-handle-errors-between-layers"><span class="num">M7</span> <bdi>How do you handle errors between layers?</bdi></a></li><li class="l3"><a href="#m8-mvvm-in-flutter-whats-the-viewmodel"><span class="num">M8</span> <bdi>MVVM in Flutter: what&#x27;s the ViewModel?</bdi></a></li><li class="l3"><a href="#m9-is-using-bloc-the-same-as-using-clean-architecture"><span class="num">M9</span> <bdi>Is using BLoC the same as using Clean Architecture?</bdi></a></li></ul></li><li class="l2"><a href="#senior"><bdi>🔴 Senior</bdi></a><ul><li class="l3"><a href="#s1-when-is-a-singleton-harmful"><span class="num">S1</span> <bdi>When is a Singleton harmful?</bdi></a></li><li class="l3"><a href="#s2-design-an-offline-first-attendance-check-in"><span class="num">S2</span> <bdi>Design an offline-first attendance check-in.</bdi></a></li><li class="l3"><a href="#s3-how-would-you-migrate-a-large-cubit-service-codebase-toward-clean-architecture-without-a-rewrite"><span class="num">S3</span> <bdi>How would you migrate a large &quot;Cubit → Service&quot; codebase toward Clean Architecture without a rewrite?</bdi></a></li><li class="l3"><a href="#s4-decorator-vs-inheritance-for-adding-caching"><span class="num">S4</span> <bdi>Decorator vs inheritance for adding caching?</bdi></a></li><li class="l3"><a href="#s5-command-pattern-in-flutters-official-architecture-why"><span class="num">S5</span> <bdi>Command pattern in Flutter&#x27;s official architecture — why?</bdi></a></li><li class="l3"><a href="#s6-what-would-you-change-first-in-your-own-projects-architecture"><span class="num">S6</span> <bdi>What would you change first in your own project&#x27;s architecture?</bdi></a></li><li class="l3"><a href="#s7-abstract-factory-when-would-you-actually-use-it-in-flutter"><span class="num">S7</span> <bdi>Abstract Factory — when would you actually use it in Flutter?</bdi></a></li></ul></li><li class="l2"><a href="#أسئلة-اعرف-الـ-pattern-من-الكود"><bdi>🔁 أسئلة &quot;اعرف الـ Pattern من الكود&quot;</bdi></a></li></ul>
+    </details>
+  </aside>
+  <main id="content" class="content"><h1 id="design-patterns-interview-questions-junior-senior"><bdi>Design Patterns — Interview Questions (Junior → Senior)</bdi></h1>
+<blockquote>
+<p dir="rtl">الإجابات <strong>بالإنجليزي</strong> (زي ما هتقولها في الـ interview)، وتحتها <strong>الفكرة بالمصري</strong>.<br />
+لما يكون عندك مثال من مشروعك، استخدمه. الأمثلة من كودك بتفرق جداً عن الإجابات المحفوظة.</p>
+</blockquote>
+<hr />
+<h2 id="junior">🟢 Junior</h2>
+<h3 id="j1-what-is-a-design-pattern"><span class="num">J1</span> <bdi>What is a design pattern?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong> A reusable, named solution to a recurring design problem. It's not code you copy; it's a structure you adapt. Patterns also give the team a shared vocabulary: saying "this is a Facade" explains a lot in one word.</p>
+<p dir="rtl"><strong>الفكرة:</strong> حل متكرر لمشكلة متكررة، ليه اسم عشان الناس تتفاهم بسرعة. مش library.</p>
+<h3 id="j2-design-pattern-vs-architecture"><span class="num">J2</span> <bdi>Design pattern vs architecture?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong> A design pattern solves a local problem between a few classes, like Strategy or Adapter. Architecture defines how the whole app is split into layers and how they depend on each other, like MVVM or Clean Architecture. One architecture usually contains many design patterns.</p>
+<p dir="rtl"><strong>الفكرة:</strong> الـ pattern = أوضة. الـ architecture = تقسيم الشقة كلها.</p>
+<h3 id="j3-what-is-a-singleton-and-give-a-flutter-example"><span class="num">J3</span> <bdi>What is a Singleton and give a Flutter example?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong> A class with exactly one instance and a global access point. For example, a <code>CacheHelper</code> with a private constructor and a <code>static final instance</code>, so the whole app shares one SharedPreferences wrapper. Firebase also uses this: <code>FirebaseAuth.instance</code>.</p>
+<p dir="rtl"><strong>الفكرة:</strong> نسخة واحدة. ذكر مثال حقيقي زي <code>CacheHelper._()</code> بيوري إنك كتبته فعلاً.</p>
+<h3 id="j4-whats-a-factory-constructor-in-dart"><span class="num">J4</span> <bdi>What's a factory constructor in Dart?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong> A constructor marked <code>factory</code> that doesn't have to create a new instance. It can return a cached instance, a subtype, or run logic first. It's common for parsing, for example <code>UserProfileModel.fromFirestore(...)</code>, and for <code>ServerFailure.fromCode(code)</code>, which picks the right message key from an error code.</p>
+<p dir="rtl"><strong>الفكرة:</strong> constructor بيقدر يقرر هيرجع إيه.</p>
+<h3 id="j5-what-is-the-observer-pattern-where-is-it-in-flutter"><span class="num">J5</span> <bdi>What is the Observer pattern? Where is it in Flutter?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong> A subject notifies all subscribers when its state changes. In Flutter it's everywhere: <code>Stream</code>, <code>ChangeNotifier</code>, and BLoC. In a typical app, Cubits listen to Firestore <code>snapshots()</code> streams and emit new states, and <code>BlocBuilder</code> rebuilds the UI.</p>
+<p dir="rtl"><strong>الفكرة:</strong> push بدل polling.</p>
+<h3 id="j6-why-should-ui-not-call-firebase-directly"><span class="num">J6</span> <bdi>Why should UI not call Firebase directly?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong> It mixes rendering with data access, makes the UI hard to test, and spreads Firebase details everywhere. A good rule is that UI never imports <code>firebase_auth</code>; it goes through <code>AuthService</code>, and data goes Screen → Cubit → Service.</p>
+<p dir="rtl"><strong>الفكرة:</strong> فصل المسؤوليات.</p>
+<h3 id="j7-what-is-copywith-and-why-do-states-use-it"><span class="num">J7</span> <bdi>What is <code>copyWith</code> and why do states use it?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong> It returns a new object with some fields changed, keeping the old one immutable. Immutable states plus value equality (<code>Equatable</code>) let BLoC detect real changes and avoid unnecessary rebuilds.</p>
+<p dir="rtl"><strong>الفكرة:</strong> ما تعدلش في الـ state، اعمل نسخة جديدة.</p>
+<hr />
+<h2 id="mid-level">🟡 Mid-level</h2>
+<h3 id="m1-explain-dependency-injection-and-how-you-did-it-in-flutter"><span class="num">M1</span> <bdi>Explain Dependency Injection and how you did it in Flutter.</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong> A class receives its dependencies instead of creating them. Every service and Cubit takes its dependencies in the constructor. All services are created once in a composition root (a <code>MultiRepositoryProvider</code> at the top of the app), and screens read them with <code>context.read</code> and pass them to their Cubit. Services take an optional <code>FirebaseFirestore</code>, so in tests I pass <code>FakeFirebaseFirestore</code>.</p>
+<p dir="rtl"><strong>الفكرة:</strong> 3 حاجات: constructor injection، composition root، testability. وقول مثال الـ test.</p>
+<h3 id="m2-di-vs-service-locator"><span class="num">M2</span> <bdi>DI vs Service Locator?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong> With DI, dependencies are pushed in and visible in the constructor. With a Service Locator, the class pulls them from a global registry, like <code>getIt&lt;T&gt;()</code>, so they're hidden and fail at runtime if not registered. <code>context.read&lt;T&gt;()</code> is technically a lookup, so I keep it at the edge, in <code>Screen.builder()</code>, and inject into the Cubit. That way the Cubit stays pure and testable.</p>
+<p dir="rtl"><strong>الفكرة:</strong> push vs pull. والحل الوسط.</p>
+<h3 id="m3-what-is-the-repository-pattern-is-a-class-called-repository-enough"><span class="num">M3</span> <bdi>What is the Repository pattern? Is a class called "Repository" enough?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong> No. A repository is a boundary that gives the rest of the app a collection-like API in domain terms and hides where data comes from: remote, cache, or local. It should own mapping and the caching policy, and ideally sit behind an interface. A real repository means Cubits only talk to it, and it combines its sources (for example a Firestore source, an access-rules check and a user lookup) and verifies the write. If Cubits call a Firestore service directly, that service is acting as data source and repository at once.</p>
+<p dir="rtl"><strong>الفكرة:</strong> الاسم مش دليل. الدليل: مين بيكلمه، وبيخبي إيه.</p>
+<h3 id="m4-repository-vs-data-source-vs-service"><span class="num">M4</span> <bdi>Repository vs Data Source vs Service?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong></p>
+<ul>
+<li dir="ltr"><strong>Data source:</strong> talks to one backend; raw I/O.</li>
+<li dir="ltr"><strong>Repository:</strong> combines data sources, maps to models, and owns caching and the source of truth.</li>
+<li dir="ltr"><strong>Service:</strong> often a wrapper around an external SDK, or a stateless operation like notifications.</li>
+</ul>
+<p dir="ltr">The Flutter architecture guide uses "services" for the lowest layer that wraps APIs, and "repositories" above them.</p>
+<p dir="rtl"><strong>الفكرة:</strong> Data source = سلك. Repository = مدير البيانات. Service = أداة.</p>
+<h3 id="m5-what-is-a-facade-example"><span class="num">M5</span> <bdi>What is a Facade? Example?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong> A simple interface in front of a complex subsystem. A <code>NetworkManager</code> can hide <code>connectivity_plus</code>, an internet checker, Dio, timers and a retry queue behind <code>canMakeRequests</code>, <code>statusStream</code> and <code>retryConnection()</code>. A common weakness: an <code>AuthService</code> that still returns Firebase's <code>UserCredential</code> simplifies but doesn't fully isolate the SDK.</p>
+<p dir="rtl"><strong>الفكرة:</strong> لو ذكرت عيب في كودك، ده بيوري نضج.</p>
+<h3 id="m6-strategy-vs-ifelse"><span class="num">M6</span> <bdi>Strategy vs if/else?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong> Strategy turns each algorithm into an object, or a function in Dart, so you can add one without editing the others (Open/Closed). With 2–3 fixed cases, a <code>switch</code> on an enum is simpler and clearer. For example, an <code>AppNavigator</code> can use Navigator on mobile and a <code>go_router</code> function injected by the web build.</p>
+<p dir="rtl"><strong>الفكرة:</strong> Strategy لما الحالات بتزيد أو بتتبدل وقت التشغيل.</p>
+<h3 id="m7-how-do-you-handle-errors-between-layers"><span class="num">M7</span> <bdi>How do you handle errors between layers?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong> A common setup: services throw, Cubits catch and map with one <code>ErrorHandler.handle(e)</code> into a typed <code>Failure</code> with a user-safe message, then emit an error state. The improvement is returning a sealed <code>Result&lt;T&gt;</code> from repositories, so the compiler forces callers to handle failure.</p>
+<p dir="rtl"><strong>الفكرة:</strong> الوضع الحالي + التحسين.</p>
+<h3 id="m8-mvvm-in-flutter-whats-the-viewmodel"><span class="num">M8</span> <bdi>MVVM in Flutter: what's the ViewModel?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong> The Cubit or ChangeNotifier holding UI state and logic; the View observes it. Rules: the View has no business logic, and the ViewModel has no widgets. A common mistake is a <code>TextEditingController</code> stored inside a Cubit state; that's a UI object leaking into the ViewModel.</p>
+<p dir="rtl"><strong>الفكرة:</strong> View بيعرض، ViewModel بيقرر.</p>
+<h3 id="m9-is-using-bloc-the-same-as-using-clean-architecture"><span class="num">M9</span> <bdi>Is using BLoC the same as using Clean Architecture?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong> No. BLoC is a state-management approach for the presentation layer. Clean Architecture is about dependency direction: domain in the center with entities and use cases, and data and UI depending on it through interfaces. You can use BLoC without Clean, and many apps do.</p>
+<p dir="rtl"><strong>الفكرة:</strong> سؤال فخ مشهور.</p>
+<hr />
+<h2 id="senior">🔴 Senior</h2>
+<h3 id="s1-when-is-a-singleton-harmful"><span class="num">S1</span> <bdi>When is a Singleton harmful?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong> When it holds mutable global state accessed directly via <code>.instance</code>: hidden dependencies, order-of-initialization bugs, and tests that leak state into each other. I prefer a "soft singleton": a public constructor for tests, plus one instance created in the composition root and injected. A network manager is a good candidate for this.</p>
+<p dir="rtl"><strong>الفكرة:</strong> المشكلة مش "نسخة واحدة"، المشكلة "وصول global".</p>
+<h3 id="s2-design-an-offline-first-attendance-check-in"><span class="num">S2</span> <bdi>Design an offline-first attendance check-in.</bdi></h3>
+<p dir="ltr"><strong>Answer (outline):</strong></p>
+<ul>
+<li dir="ltr"><strong>UI → <code>CheckInCubit</code></strong> (ViewModel)</li>
+<li dir="ltr">→ <strong><code>AttendanceRepository</code></strong> (interface), backed by a local store (source of truth) and a remote data source.</li>
+<li dir="ltr">Writes go local first and enter a <strong>Command queue</strong> (each check-in is an object with an id for idempotency), flushed on reconnect.</li>
+<li dir="ltr"><strong>Strategy</strong> for the verification method (GPS/QR/Wi-Fi).</li>
+<li dir="ltr"><strong>Result</strong> types for failures.</li>
+<li dir="ltr">An <strong>Observer</strong> stream exposes pending/synced status.</li>
+<li dir="ltr">Server-side dedupe by command id.</li>
+<li dir="ltr">Trade-off: if using Firestore, its offline persistence already queues writes, so a custom queue may duplicate it.</li>
+</ul>
+<p dir="rtl"><strong>الفكرة:</strong> وريه إنك بتختار pattern لكل مشكلة، وإنك عارف امتى ما تستخدموش.</p>
+<h3 id="s3-how-would-you-migrate-a-large-cubit-service-codebase-toward-clean-architecture-without-a-rewrite"><span class="num">S3</span> <bdi>How would you migrate a large "Cubit → Service" codebase toward Clean Architecture without a rewrite?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong> Incrementally.</p>
+<ol>
+<li dir="ltr">Introduce interfaces for the most-tested or most-changing services.</li>
+<li dir="ltr">Add repositories per feature as Cubits get touched (strangler pattern).</li>
+<li dir="ltr">Fix dependency direction: core must not import features, and break package cycles by extracting shared models.</li>
+<li dir="ltr">Add <code>Result</code> at repository boundaries.</li>
+<li dir="ltr">Add use cases only where there's real cross-repository business logic.</li>
+</ol>
+<p dir="ltr">Measure progress by Cubits testable with fakes.</p>
+<p dir="rtl"><strong>الفكرة:</strong> تدريجي، والـ use case مش لكل حاجة.</p>
+<h3 id="s4-decorator-vs-inheritance-for-adding-caching"><span class="num">S4</span> <bdi>Decorator vs inheritance for adding caching?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong> Inheritance fixes the combination at compile time and leads to class explosion (CachedLogged…). A Decorator wraps any implementation of the same interface, so you compose caching, logging and retry in the composition root and test each one alone. It requires an interface, which is another reason to introduce abstractions.</p>
+<h3 id="s5-command-pattern-in-flutters-official-architecture-why"><span class="num">S5</span> <bdi>Command pattern in Flutter's official architecture — why?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong> Flutter's docs wrap ViewModel actions in Command objects that expose running, error and completed state. The UI can then show loading and errors per action without ad-hoc booleans in the state. It also composes with <code>Result</code>.</p>
+<p dir="rtl"><strong>مصدر:</strong> https://docs.flutter.dev/app-architecture/design-patterns/command</p>
+<h3 id="s6-what-would-you-change-first-in-your-own-projects-architecture"><span class="num">S6</span> <bdi>What would you change first in your own project's architecture?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong></p>
+<ol>
+<li dir="ltr">Break any package cycles and core→features imports.</li>
+<li dir="ltr">Introduce interfaces for the main data services so Cubits can be unit-tested with fakes.</li>
+<li dir="ltr">Split very large services by responsibility.</li>
+<li dir="ltr">Return <code>Result</code> instead of throwing.</li>
+</ol>
+<p dir="ltr">I'd do it incrementally while touching features, not as a big rewrite.</p>
+<p dir="rtl"><strong>الفكرة:</strong> نقد ذاتي واقعي = إشارة Senior قوية.</p>
+<h3 id="s7-abstract-factory-when-would-you-actually-use-it-in-flutter"><span class="num">S7</span> <bdi>Abstract Factory — when would you actually use it in Flutter?</bdi></h3>
+<p dir="ltr"><strong>Answer:</strong> Rarely. It's for creating families of related objects that must match, like a full Cupertino vs Material widget set, or a white-label app where each brand needs a matching set of services. Usually theming and <code>Platform</code> checks are enough. I'd mention it's a pattern I understand but haven't needed.</p>
+<p dir="rtl"><strong>الفكرة:</strong> الصراحة إنك ما استخدمتوش أحسن من إنك تخترع.</p>
+<hr />
+<h2 id="أسئلة-اعرف-الـ-pattern-من-الكود">🔁 أسئلة "اعرف الـ Pattern من الكود"</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th dir="rtl">الكود</th>
+<th dir="rtl">الـ Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto"><code>CacheHelper._(); static final instance = CacheHelper._();</code></td>
+<td dir="ltr">Singleton</td>
+</tr>
+<tr>
+<td dir="auto"><code>factory ServerFailure.fromCode(code) =&gt; switch(code) {...}</code></td>
+<td dir="ltr">Simple/Static Factory</td>
+</tr>
+<tr>
+<td dir="auto"><code>_sub = stream.listen((x) =&gt; emit(...))</code></td>
+<td dir="ltr">Observer</td>
+</tr>
+<tr>
+<td dir="auto"><code>OdooAdapter implements LeaveBalanceProvider { final LegacyClient _c; ... }</code></td>
+<td dir="ltr">Adapter</td>
+</tr>
+<tr>
+<td dir="auto"><code>LoggingRepo(CachedRepo(RemoteRepo()))</code></td>
+<td dir="ltr">Decorator</td>
+</tr>
+<tr>
+<td dir="auto"><code>AppNavigator.webPushNamed = (ctx, route) =&gt; ...</code></td>
+<td dir="ltr">Strategy (function-based)</td>
+</tr>
+<tr>
+<td dir="ltr"><code>queue.enqueue(key, () =&gt; run())</code> then <code>flushAll()</code></td>
+<td dir="ltr">Command</td>
+</tr>
+<tr>
+<td dir="rtl"><code>Repository(firestore: c.read&lt;X&gt;(), access: c.read&lt;Y&gt;())</code> في الـ root widget</td>
+<td dir="ltr">DI + Composition Root</td>
+</tr>
+<tr>
+<td dir="auto"><code>context.read&lt;AuthService&gt;()</code></td>
+<td dir="ltr">Service Locator-style lookup (Provider)</td>
+</tr>
+<tr>
+<td dir="auto"><code>sealed class LeaveState { LeaveState approve(); }</code></td>
+<td dir="ltr">State</td>
+</tr>
+<tr>
+<td dir="auto"><code>Builder('acme').between(a,b).dept('HR').build()</code></td>
+<td dir="ltr">Builder</td>
+</tr>
+</tbody>
+</table></div></main>
+</div>
+<footer class="footer">
+  <p>محتوى تعليمي عام عن الـ Design Patterns في Flutter و Dart. المصادر الأصلية مذكورة جنب كل جزء.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dart.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

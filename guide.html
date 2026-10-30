@@ -1,0 +1,1075 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الدليل · Flutter Design Patterns</title>
+<meta name="description" content="شرح بالمصري لأهم Design Patterns في Flutter: ما هو، المشكلة، امتى تستخدمه، عيوبه، وإجابة الـ interview.">
+<meta property="og:title" content="الدليل · Flutter Design Patterns">
+<meta property="og:description" content="شرح بالمصري لأهم Design Patterns في Flutter: ما هو، المشكلة، امتى تستخدمه، عيوبه، وإجابة الـ interview.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://dobydragon.github.io/flutter-design-patterns/guide.html">
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+
+</head>
+<body>
+<a class="skip" href="#content">تخطى للمحتوى</a>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html"><img src="icons/favicon.svg" alt="" width="28" height="28"><bdi>Flutter Design Patterns</bdi></a>
+    <button class="menu-btn" aria-expanded="false" aria-controls="nav" aria-label="القائمة">☰</button>
+    <nav id="nav" class="nav"><a href="index.html">الرئيسية</a><a href="guide.html" aria-current="page">الدليل</a><a href="examples.html">الأمثلة</a><a href="interview.html">أسئلة الـ Interview</a><a href="roadmap.html">خطة المذاكرة</a></nav>
+    <button class="theme-btn" type="button" aria-label="تبديل الوضع الليلي">◐</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" aria-label="المحتويات">
+    <details class="toc-box" open>
+      <summary>المحتويات</summary>
+      <ul class="toc"><li class="l1"><a href="#الجزء-الأول-الأنماط-الأساسية"><bdi>الجزء الأول — الأنماط الأساسية</bdi></a><ul><li class="l2"><a href="#1-dependency-injection"><span class="num">1</span> <bdi>Dependency Injection</bdi></a></li><li class="l2"><a href="#2-observer"><span class="num">2</span> <bdi>Observer</bdi></a></li><li class="l2"><a href="#3-facade"><span class="num">3</span> <bdi>Facade</bdi></a></li><li class="l2"><a href="#4-singleton"><span class="num">4</span> <bdi>Singleton</bdi></a></li><li class="l2"><a href="#5-factory-simple-factory-factory-constructor"><span class="num">5</span> <bdi>Factory (Simple Factory / Factory Constructor)</bdi></a></li><li class="l2"><a href="#6-repository"><span class="num">6</span> <bdi>Repository</bdi></a></li><li class="l2"><a href="#7-mvvm-architectural-pattern"><span class="num">7</span> <bdi>MVVM (Architectural Pattern)</bdi></a></li><li class="l2"><a href="#8-strategy"><span class="num">8</span> <bdi>Strategy</bdi></a></li><li class="l2"><a href="#9-adapter"><span class="num">9</span> <bdi>Adapter</bdi></a></li><li class="l2"><a href="#10-service-locator"><span class="num">10</span> <bdi>Service Locator</bdi></a></li><li class="l2"><a href="#11-command"><span class="num">11</span> <bdi>Command</bdi></a></li></ul></li><li class="l1"><a href="#الجزء-التاني-المقارنات"><bdi>الجزء التاني — المقارنات</bdi></a><ul><li class="l2"><a href="#1-singleton-vs-factory"><span class="num">1</span> <bdi>Singleton vs Factory</bdi></a></li><li class="l2"><a href="#2-factory-vs-abstract-factory"><span class="num">2</span> <bdi>Factory vs Abstract Factory</bdi></a></li><li class="l2"><a href="#3-repository-vs-service"><span class="num">3</span> <bdi>Repository vs Service</bdi></a></li><li class="l2"><a href="#4-repository-vs-data-source"><span class="num">4</span> <bdi>Repository vs Data Source</bdi></a></li><li class="l2"><a href="#5-dependency-injection-vs-service-locator"><span class="num">5</span> <bdi>Dependency Injection vs Service Locator</bdi></a></li><li class="l2"><a href="#6-mvc-vs-mvp-vs-mvvm"><span class="num">6</span> <bdi>MVC vs MVP vs MVVM</bdi></a></li><li class="l2"><a href="#7-observer-vs-stream"><span class="num">7</span> <bdi>Observer vs Stream</bdi></a></li><li class="l2"><a href="#8-strategy-vs-state"><span class="num">8</span> <bdi>Strategy vs State</bdi></a></li><li class="l2"><a href="#9-builder-vs-factory"><span class="num">9</span> <bdi>Builder vs Factory</bdi></a></li><li class="l2"><a href="#10-architecture-vs-design-pattern"><span class="num">10</span> <bdi>Architecture vs Design Pattern</bdi></a></li></ul></li><li class="l1"><a href="#الجزء-التالت-أنماط-لسه-هتتعلمها-مختصر"><bdi>الجزء التالت — أنماط لسه هتتعلمها (مختصر)</bdi></a><ul><li class="l2"><a href="#clean-architecture-architectural"><bdi>Clean Architecture (Architectural)</bdi></a></li><li class="l2"><a href="#result-type-error-handling"><bdi>Result type (Error handling)</bdi></a></li><li class="l2"><a href="#decorator-gof-structural"><bdi>Decorator (GoF – Structural)</bdi></a></li><li class="l2"><a href="#state-gof-behavioral"><bdi>State (GoF – Behavioral)</bdi></a></li><li class="l2"><a href="#builder-gof-creational"><bdi>Builder (GoF – Creational)</bdi></a></li><li class="l2"><a href="#factory-method-gof-creational"><bdi>Factory Method (GoF – Creational)</bdi></a></li><li class="l2"><a href="#abstract-factory-gof-creational"><bdi>Abstract Factory (GoF – Creational)</bdi></a></li><li class="l2"><a href="#prototype-gof-creational"><bdi>Prototype (GoF – Creational)</bdi></a></li><li class="l2"><a href="#chain-of-responsibility-bonus"><bdi>Chain of Responsibility (bonus)</bdi></a></li><li class="l2"><a href="#المصادر-الرئيسية"><bdi>المصادر الرئيسية</bdi></a></li></ul></li></ul>
+    </details>
+  </aside>
+  <main id="content" class="content"><h1 id="flutter-design-patterns-study-guide"><bdi>Flutter Design Patterns — Study Guide</bdi></h1>
+<p dir="rtl"><strong>دليل مذاكرة عملي لـ Flutter developers</strong></p>
+<p dir="rtl">الدليل ده 3 أجزاء:</p>
+<ol>
+<li dir="rtl"><strong>الجزء الأول:</strong> الأنماط اللي <strong>هتقابلها في أي Flutter app تقريباً</strong> (11 pattern). كل واحد بنفس الـ 9 نقط.</li>
+<li dir="rtl"><strong>الجزء التاني:</strong> مقارنات بين الأنماط اللي بتتلخبط (10 مقارنات).</li>
+<li dir="rtl"><strong>الجزء التالت:</strong> الأنماط اللي <strong>لسه هتتعلمها</strong>، بشكل مختصر.</li>
+</ol>
+<p dir="rtl"><strong>إزاي تذاكره:</strong> pattern واحد في اليوم. اقرا ← دوّر عليه في كود مشروعك ← شغّل المثال من <a href="examples.html">الأمثلة العملية</a> ← قول إجابة الـ interview بصوت عالي.</p>
+<p dir="rtl"><strong>تصنيف مهم:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th dir="rtl">النوع</th>
+<th dir="rtl">أمثلة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="ltr">Design Pattern (GoF)</td>
+<td dir="ltr">Singleton, Factory Method, Abstract Factory, Builder, Prototype, Adapter, Decorator, Facade, Observer, Strategy, State, Command</td>
+</tr>
+<tr>
+<td dir="ltr">Architectural Pattern</td>
+<td dir="ltr">MVC, MVP, MVVM, Clean Architecture</td>
+</tr>
+<tr>
+<td dir="ltr">DI / Enterprise technique</td>
+<td dir="ltr">Dependency Injection, Service Locator, Repository, Data Mapper</td>
+</tr>
+<tr>
+<td dir="ltr">Principle</td>
+<td dir="ltr">SOLID, Separation of Concerns</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h1 id="الجزء-الأول-الأنماط-الأساسية">الجزء الأول — الأنماط الأساسية</h1>
+<h2 id="1-dependency-injection"><span class="num">1</span> <bdi>Dependency Injection</bdi></h2>
+<p dir="rtl"><strong>1. ما هو؟</strong><br />
+الـ class <strong>ما بيعملش</strong> الحاجات اللي محتاجها بنفسه. بتيجيله جاهزة من برة، غالباً في الـ constructor.</p>
+<p dir="rtl"><strong>2. ليه اتعمل؟</strong><br />
+عشان الـ classes كانت مربوطة ببعض جامد (tight coupling). لو <code>A</code> بيعمل <code>new B()</code> جواه، مستحيل تبدّل <code>B</code> من غير ما تعدّل <code>A</code>.</p>
+<p dir="rtl"><strong>3. المشكلة اللي بيحلها</strong></p>
+<ul>
+<li dir="rtl"><strong>قبل:</strong> <code>AttendanceService</code> بيعمل <code>SystemClock()</code> جواه، فمش هتقدر تختبر "الموظف متأخر؟" من غير ما تستنى الساعة 9.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>AttendanceService(clock: FixedClock(09:15))</code>، والاختبار بيدي نفس النتيجة كل مرة.</li>
+</ul>
+<p dir="rtl"><strong>4. بيشتغل إزاي؟</strong></p>
+<ol>
+<li dir="rtl">الـ class بيعلن احتياجاته في الـ constructor.</li>
+<li dir="rtl">فيه مكان واحد اسمه <strong>Composition Root</strong> بيعمل كل الـ objects ويوصلهم ببعض.</li>
+<li dir="rtl">في الـ test بتبعت نسخ fake.</li>
+</ol>
+<p dir="rtl">أنواعه: constructor injection (الأشهر)، setter injection، method injection.</p>
+<p dir="rtl"><strong>5. ليه في Flutter؟</strong></p>
+<ul>
+<li dir="rtl">Testing بـ fakes.</li>
+<li dir="rtl">تبديل Firebase بـ emulator أو fake.</li>
+<li dir="rtl">Provider و <code>RepositoryProvider</code> و <code>get_it</code> (الأخير بيُستخدم كـ locator).</li>
+</ul>
+<p dir="rtl"><strong>6. امتى تستخدمه؟</strong></p>
+<ul>
+<li dir="rtl"><strong>مناسب:</strong> أي class بيكلم I/O (network, DB, time, storage) أو محتاج تختبره.</li>
+<li dir="rtl"><strong>زيادة:</strong> value objects، helpers نقية، widgets بسيطة.</li>
+</ul>
+<p dir="rtl"><strong>7. عيوبه</strong></p>
+<ul>
+<li dir="rtl">Composition root ممكن يكبر جداً (عشرات الـ providers في app كبير).</li>
+<li dir="rtl">Constructors طويلة (Cubit بياخد 5–6 dependencies).</li>
+<li dir="rtl">لو من غير interfaces، القيمة نصها بس.</li>
+</ul>
+<p dir="rtl"><strong>8. في الـ Interview</strong></p>
+<blockquote>
+<p dir="ltr"><strong>EN:</strong> "Dependency Injection means a class receives its dependencies instead of creating them. In Flutter I use constructor injection everywhere, with a single composition root built from <code>MultiRepositoryProvider</code> at the top of the app. Services take an optional <code>FirebaseFirestore</code>, so in tests I inject <code>FakeFirebaseFirestore</code>. The benefit is loose coupling and testability."</p>
+<p dir="rtl"><strong>بالمصري:</strong> "الـ class ما بيعملش حاجاته، بتيجيله. أنا بعمل كل الـ services في مكان واحد وبوزعها بـ Provider، وعشان كده قدرت أختبر الـ services بـ Firestore وهمي."</p>
+</blockquote>
+<p dir="rtl"><strong>9. أسئلة متابعة</strong></p>
+<ul>
+<li dir="ltr"><strong>Q:</strong> Is Provider DI or Service Locator? → <strong>A:</strong> The tree-scoped providers are DI-like, but <code>context.read&lt;T&gt;()</code> is a lookup. I use it only at the edge, in <code>Screen.builder</code>, then inject into the Cubit.</li>
+<li dir="ltr"><strong>Q:</strong> Why constructor injection over setter? → <strong>A:</strong> The object is always valid after construction, dependencies are visible, and fields can be <code>final</code>.</li>
+<li dir="ltr"><strong>Q:</strong> What would you improve? → <strong>A:</strong> Interfaces for key services, and removing the duplicate instances.</li>
+</ul>
+<p dir="rtl">مصدر: <a href="https://martinfowler.com/articles/injection.html" target="_blank" rel="noopener">Fowler – Inversion of Control Containers and the DI pattern</a></p>
+<hr />
+<h2 id="2-observer"><span class="num">2</span> <bdi>Observer</bdi></h2>
+<p dir="rtl"><strong>1. ما هو؟</strong><br />
+Object (Subject) بيبلغ كل المشتركين (Observers) أول ما حالته تتغير.</p>
+<p dir="rtl"><strong>2. ليه اتعمل؟</strong><br />
+عشان أجزاء كتير تعرف بالتغيير من غير ما تكون مربوطة ببعض ومن غير polling.</p>
+<p dir="rtl"><strong>3. المشكلة</strong></p>
+<ul>
+<li dir="rtl"><strong>قبل:</strong> الشاشة بتسأل كل ثانية "فيه check-in جديد؟"، وده شغل على الفاضي وتأخير.</li>
+<li dir="rtl"><strong>بعد:</strong> المصدر بيبعت لما يحصل تغيير بس.</li>
+</ul>
+<p dir="rtl"><strong>4. بيشتغل إزاي؟</strong></p>
+<ol>
+<li dir="rtl">Subject عنده list of listeners.</li>
+<li dir="auto"><code>subscribe</code> / <code>unsubscribe</code>.</li>
+<li dir="rtl">لما يتغير: <code>notify</code> الكل.</li>
+</ol>
+<p dir="rtl">في Dart: <code>Stream</code> + <code>listen</code> + <code>StreamSubscription.cancel()</code>.</p>
+<p dir="rtl"><strong>5. ليه في Flutter؟</strong></p>
+<ul>
+<li dir="rtl">Flutter كله reactive: <code>Stream</code>, <code>ChangeNotifier</code>, <code>ValueNotifier</code>, Bloc/Cubit.</li>
+<li dir="rtl">Firestore <code>snapshots()</code> = observer جاهز.</li>
+</ul>
+<p dir="rtl"><strong>6. امتى؟</strong></p>
+<ul>
+<li dir="rtl"><strong>مناسب:</strong> بيانات live، حالة الشبكة، auth state، notifications counter.</li>
+<li dir="rtl"><strong>زيادة:</strong> قيمة بتتقرا مرة واحدة. استخدم <code>Future</code>.</li>
+</ul>
+<p dir="rtl"><strong>7. عيوبه</strong></p>
+<ul>
+<li dir="rtl">Memory leaks لو نسيت <code>cancel</code>.</li>
+<li dir="rtl">ترتيب الإشعارات مش مضمون.</li>
+<li dir="rtl">صعب تتبع "مين غيّر إيه" لو الـ observers كتير.</li>
+<li dir="rtl"><code>StreamBuilder</code> اللي بيقرا من Firestore مباشرة في الـ UI بيتخطى الـ Cubit.</li>
+</ul>
+<p dir="ltr"><strong>8. Interview</strong></p>
+<blockquote>
+<p dir="ltr"><strong>EN:</strong> "Observer lets a subject notify subscribers when its state changes. In Flutter it's built into Streams and BLoC. In a typical Cubit setup, Cubits subscribe to Firestore snapshot streams and emit new states, and the UI observes the Cubit through <code>BlocBuilder</code>. I always cancel subscriptions in the Cubit's <code>close()</code> to avoid leaks."</p>
+<p dir="rtl"><strong>بالمصري:</strong> "اللي عنده البيانات بيبلغ اللي مهتمين. Firestore بيبلغ الـ Cubit، والـ Cubit بيبلغ الشاشة، وبقفل الاشتراك لما الشاشة تتقفل."</p>
+</blockquote>
+<p dir="rtl"><strong>9. أسئلة متابعة</strong></p>
+<ul>
+<li dir="ltr"><strong>Q:</strong> Single-subscription vs broadcast stream? → <strong>A:</strong> Single allows one listener and buffers events. Broadcast allows many and doesn't buffer for late listeners.</li>
+<li dir="ltr"><strong>Q:</strong> How do you avoid leaks? → <strong>A:</strong> Keep the <code>StreamSubscription</code>, cancel it in <code>close()</code> or <code>dispose()</code>, and check <code>isClosed</code> before emitting.</li>
+<li dir="ltr"><strong>Q:</strong> <code>BlocListener</code> vs <code>BlocBuilder</code>? → <strong>A:</strong> Builder rebuilds UI. Listener runs side effects once per state (navigation, toast).</li>
+</ul>
+<p dir="rtl">مصادر: <a href="https://refactoring.guru/design-patterns/observer" target="_blank" rel="noopener">Observer</a> · <a href="https://dart.dev/libraries/async/using-streams" target="_blank" rel="noopener">Dart Streams</a></p>
+<hr />
+<h2 id="3-facade"><span class="num">3</span> <bdi>Facade</bdi></h2>
+<p dir="rtl"><strong>1. ما هو؟</strong><br />
+واجهة بسيطة قدام نظام معقد.</p>
+<p dir="rtl"><strong>2. ليه اتعمل؟</strong><br />
+عشان الـ client ما يحتاجش يعرف 5 classes وترتيب استدعائهم.</p>
+<p dir="rtl"><strong>3. المشكلة</strong></p>
+<ul>
+<li dir="rtl"><strong>قبل:</strong> شاشة الـ Login بتنادي FirebaseAuth، وبعدين FCM، وبعدين Firestore، وبتترجم error codes بنفسها.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>authService.signIn(...)</code>.</li>
+</ul>
+<p dir="rtl"><strong>4. بيشتغل إزاي؟</strong><br />
+Class بيمسك references للـ subsystems، وبيقدم methods قليلة عالية المستوى، وبيفوّض للداخل.</p>
+<p dir="rtl"><strong>5. ليه في Flutter؟</strong></p>
+<ul>
+<li dir="rtl">Firebase SDKs كتير ومعقدة.</li>
+<li dir="rtl">لو غيرت SDK، بتعدل مكان واحد.</li>
+<li dir="rtl">بتمنع الـ UI من الـ imports المباشرة.</li>
+</ul>
+<p dir="rtl"><strong>6. امتى؟</strong></p>
+<ul>
+<li dir="rtl"><strong>مناسب:</strong> SDK معقد أو أكتر من subsystem بيتنادوا مع بعض.</li>
+<li dir="rtl"><strong>زيادة:</strong> call واحدة بسيطة.</li>
+</ul>
+<p dir="rtl"><strong>7. عيوبه</strong></p>
+<ul>
+<li dir="rtl">ممكن يبقى <strong>God object</strong> لو كبر (network manager بـ مئات السطور).</li>
+<li dir="rtl">لو بيسرّب types الـ SDK، العزل ناقص.</li>
+</ul>
+<p dir="ltr"><strong>8. Interview</strong></p>
+<blockquote>
+<p dir="ltr"><strong>EN:</strong> "A Facade gives a simple interface to a complex subsystem. For example, an <code>AuthService</code> wraps Firebase Auth, and the rule is that UI never imports <code>firebase_auth</code> directly. A <code>NetworkManager</code> can hide connectivity checks, an internet checker, Dio and a retry queue behind a few methods. A common limitation is returning Firebase's <code>UserCredential</code> from the facade. Returning your own <code>AppUser</code> fully isolates the SDK."</p>
+<p dir="rtl"><strong>بالمصري:</strong> "واجهة بسيطة قدام حاجة معقدة. واعرف عيبها: لو سرّبت types الـ SDK، العزل ناقص."</p>
+</blockquote>
+<p dir="rtl"><strong>9. أسئلة متابعة</strong></p>
+<ul>
+<li dir="ltr"><strong>Q:</strong> Facade vs Adapter? → <strong>A:</strong> Facade simplifies many classes. Adapter converts one interface to another expected one.</li>
+<li dir="ltr"><strong>Q:</strong> Facade vs Repository? → <strong>A:</strong> A repository is a facade specialized for data, with a domain API, mapping and caching.</li>
+</ul>
+<p dir="rtl">مصدر: <a href="https://refactoring.guru/design-patterns/facade" target="_blank" rel="noopener">Facade</a></p>
+<hr />
+<h2 id="4-singleton"><span class="num">4</span> <bdi>Singleton</bdi></h2>
+<p dir="rtl"><strong>1. ما هو؟</strong><br />
+Class ليه <strong>نسخة واحدة بس</strong> ونقطة وصول global.</p>
+<p dir="rtl"><strong>2. ليه اتعمل؟</strong><br />
+موارد مشتركة غالية أو لازم تبقى واحدة: config، cache، connection pool.</p>
+<p dir="rtl"><strong>3. المشكلة</strong></p>
+<ul>
+<li dir="rtl"><strong>قبل:</strong> كل شاشة بتعمل storage object جديد، فالبيانات مش متسقة والـ init بيتكرر.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>LocalStorage.instance</code>.</li>
+</ul>
+<p dir="rtl"><strong>4. بيشتغل إزاي؟</strong></p>
+<ol>
+<li dir="ltr">Private constructor <code>ClassName._()</code>.</li>
+<li dir="rtl"><code>static final instance</code> (eager)، أو <code>static X? _instance</code> + <code>??=</code> (lazy).</li>
+<li dir="rtl">(اختياري) <code>factory ClassName() =&gt; instance;</code>.</li>
+</ol>
+<p dir="rtl"><strong>5. ليه في Flutter؟</strong></p>
+<ul>
+<li dir="ltr">SharedPreferences wrapper.</li>
+<li dir="rtl">Firebase نفسه (<code>FirebaseAuth.instance</code>).</li>
+<li dir="ltr">Logger.</li>
+</ul>
+<p dir="rtl"><strong>6. امتى؟</strong></p>
+<ul>
+<li dir="rtl"><strong>مناسب:</strong> resource واحد فعلاً (cache, logger, connectivity monitor).</li>
+<li dir="rtl"><strong>زيادة:</strong> حاجة ملهاش state (استخدم static أو top-level functions)، أو حاجة محتاج نسخ مختلفة منها في الـ tests.</li>
+</ul>
+<p dir="rtl"><strong>7. عيوبه</strong></p>
+<ul>
+<li dir="ltr">Global mutable state.</li>
+<li dir="rtl">Hidden dependencies (<code>X.instance</code> جوه أي method).</li>
+<li dir="rtl">Tests بتأثر على بعض.</li>
+<li dir="rtl">ترتيب init: wrapper زي <code>CacheHelper</code> بيرمي <code>StateError</code> لو نسيت <code>init()</code>.</li>
+</ul>
+<p dir="ltr"><strong>8. Interview</strong></p>
+<blockquote>
+<p dir="ltr"><strong>EN:</strong> "Singleton guarantees one instance with a global access point. A typical use is a SharedPreferences wrapper with a private constructor and a static instance. But I prefer not to access singletons directly inside business classes. For something like a network manager, keep the constructor public for tests and inject the shared instance through Provider. That keeps the single instance without hiding the dependency."</p>
+<p dir="rtl"><strong>بالمصري:</strong> "نسخة واحدة، بس بوزعها بالـ DI بدل ما أناديها من أي حتة."</p>
+</blockquote>
+<p dir="rtl"><strong>9. أسئلة متابعة</strong></p>
+<ul>
+<li dir="ltr"><strong>Q:</strong> Is a Singleton an anti-pattern? → <strong>A:</strong> Only when used as hidden global state. A single instance managed by the DI container is fine.</li>
+<li dir="ltr"><strong>Q:</strong> Lazy vs eager in Dart? → <strong>A:</strong> Dart <code>static final</code> fields are already lazily initialized on first access. <code>??=</code> is explicit laziness.</li>
+<li dir="ltr"><strong>Q:</strong> Thread safety? → <strong>A:</strong> Dart isolates don't share memory, so the classic double-checked locking isn't needed. Each isolate gets its own instance.</li>
+</ul>
+<p dir="rtl">مصادر: <a href="https://refactoring.guru/design-patterns/singleton" target="_blank" rel="noopener">Singleton</a> · <a href="https://dart.dev/language/constructors" target="_blank" rel="noopener">Dart constructors</a></p>
+<hr />
+<h2 id="5-factory-simple-factory-factory-constructor"><span class="num">5</span> <bdi>Factory (Simple Factory / Factory Constructor)</bdi></h2>
+<p dir="rtl"><strong>1. ما هو؟</strong><br />
+مكان واحد (method أو constructor) بيقرر إزاي يتعمل الـ object. الـ caller بيطلب بس.</p>
+<p dir="rtl"><strong>تنبيه:</strong> ده <strong>مش</strong> GoF Factory Method (ده بيعتمد على inheritance، وشرحه في الجزء التالت).</p>
+<p dir="rtl"><strong>2. ليه اتعمل؟</strong><br />
+عشان منطق الإنشاء ما يتكررش ويتلخبط في كل مكان.</p>
+<p dir="rtl"><strong>3. المشكلة</strong></p>
+<ul>
+<li dir="rtl"><strong>قبل:</strong> كل شاشة بتبني notification بإيدها، فبيحصل typo في الـ route.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>AppNotification.forKind(kind)</code>.</li>
+</ul>
+<p dir="rtl"><strong>4. بيشتغل إزاي؟</strong></p>
+<ul>
+<li dir="rtl"><code>factory</code> constructor في Dart ممكن يرجّع subtype أو cached instance أو يعمل logic.</li>
+<li dir="rtl">أو <code>static</code> method بيرجّع object.</li>
+</ul>
+<p dir="rtl"><strong>5. ليه في Flutter؟</strong></p>
+<ul>
+<li dir="rtl"><code>fromJson</code> و <code>fromFirestore</code>.</li>
+<li dir="rtl">اختيار widget أو notification أو failure حسب نوع.</li>
+</ul>
+<p dir="rtl"><strong>6. امتى؟</strong></p>
+<ul>
+<li dir="rtl"><strong>مناسب:</strong> إنشاء فيه قرار (نوع، fallback، parsing).</li>
+<li dir="rtl"><strong>زيادة:</strong> <code>Point(x, y)</code>.</li>
+</ul>
+<p dir="rtl"><strong>7. عيوبه</strong></p>
+<ul>
+<li dir="rtl"><code>switch</code> كبير بيكبر مع كل نوع جديد. لو كبر جداً، فكّر في registry أو Strategy.</li>
+</ul>
+<p dir="ltr"><strong>8. Interview</strong></p>
+<blockquote>
+<p dir="ltr"><strong>EN:</strong> "A factory centralizes object creation. In Dart I use factory constructors like <code>fromFirestore</code> for parsing, and <code>Failure.fromCode</code>, which maps a backend error code to the right message key. For notifications, a <code>NotificationTemplate.forKind</code> factory can build the title, body and route for each type, with a fallback when localization isn't loaded."</p>
+<p dir="rtl"><strong>بالمصري:</strong> "مكان واحد بيقرر إزاي الحاجة تتعمل."</p>
+</blockquote>
+<p dir="rtl"><strong>9. أسئلة متابعة</strong></p>
+<ul>
+<li dir="ltr"><strong>Q:</strong> factory constructor vs static method? → <strong>A:</strong> A factory constructor is called like a constructor and can return a subtype or cached instance. A static method can have any name and return type, including <code>Future</code>.</li>
+<li dir="ltr"><strong>Q:</strong> Factory vs Factory Method? → <strong>A:</strong> A simple factory is one function with a switch. Factory Method lets subclasses decide via an overridden method.</li>
+</ul>
+<p dir="rtl">مصدر: <a href="https://dart.dev/language/constructors#factory-constructors" target="_blank" rel="noopener">Dart factory constructors</a></p>
+<hr />
+<h2 id="6-repository"><span class="num">6</span> <bdi>Repository</bdi></h2>
+<p dir="rtl"><strong>1. ما هو؟</strong><br />
+طبقة بتدي باقي الـ app API بلغة الـ business (<code>getEmployee</code>, <code>submitEvaluation</code>) وبتخبي <strong>منين</strong> البيانات (API، cache، local) و<strong>إزاي</strong> بتتحول.</p>
+<p dir="rtl"><strong>2. ليه اتعمل؟</strong><br />
+عشان الـ business logic ما يتربطش بـ database أو API معين، وعشان الـ mapping والـ caching يبقوا في مكان واحد.</p>
+<p dir="rtl"><strong>3. المشكلة</strong></p>
+<ul>
+<li dir="rtl"><strong>قبل:</strong> الـ Cubit بيقرا <code>raw['full_name']</code> من Firestore.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>repo.getEmployee(id)</code> بيرجع <code>Employee</code>.</li>
+</ul>
+<p dir="rtl"><strong>4. بيشتغل إزاي؟</strong></p>
+<pre dir="ltr"><code>Cubit → Repository (interface) → RepositoryImpl → DataSource(s) → Firebase/API/Local
+</code></pre>
+<ul>
+<li dir="rtl"><strong>Data Source:</strong> I/O خام.</li>
+<li dir="rtl"><strong>Repository:</strong> يجمع + يحول + يقرر cache/source of truth.</li>
+</ul>
+<p dir="rtl"><strong>5. ليه في Flutter؟</strong></p>
+<ul>
+<li dir="ltr">Offline-first.</li>
+<li dir="ltr">Cache.</li>
+<li dir="rtl">تغيير backend.</li>
+<li dir="rtl">Testing بـ fake repo.</li>
+</ul>
+<p dir="rtl"><strong>6. امتى؟</strong></p>
+<ul>
+<li dir="rtl"><strong>مناسب:</strong> أكتر من مصدر بيانات، cache، offline، backend ممكن يتغير، محتاج تختبر الـ Cubit.</li>
+<li dir="rtl"><strong>زيادة:</strong> app صغير بـ backend واحد ثابت، وفيه service نضيف بيرجع models. الـ repository هيبقى pass-through بس.</li>
+</ul>
+<p dir="rtl"><strong>7. عيوبه</strong></p>
+<ul>
+<li dir="rtl">Boilerplate (methods بتنادي methods).</li>
+<li dir="rtl">لو مفيش interface، نص القيمة بس.</li>
+<li dir="rtl">خطر إنه يبقى "service تاني بنفس الاسم".</li>
+</ul>
+<p dir="ltr"><strong>8. Interview</strong></p>
+<blockquote>
+<p dir="ltr"><strong>EN:</strong> "A repository is the boundary between business logic and data sources. It exposes a domain-level API, hides whether data comes from remote or cache, and owns the mapping. A good repository can combine several data sources, for example a Firestore source, an access-rules check and a user lookup, and verify the write reached the server. Cubits only talk to the repository. Putting repositories behind interfaces lets you unit-test Cubits with fakes."</p>
+<p dir="rtl"><strong>بالمصري:</strong> "طبقة بتخبي منين البيانات، ومن غير interface قيمتها نصها بس."</p>
+</blockquote>
+<p dir="rtl"><strong>9. أسئلة متابعة</strong></p>
+<ul>
+<li dir="ltr"><strong>Q:</strong> Should a repository return Firestore types? → <strong>A:</strong> No. It should return app models or entities.</li>
+<li dir="ltr"><strong>Q:</strong> One repository per collection or per feature? → <strong>A:</strong> Per domain concept or aggregate, not per table.</li>
+<li dir="ltr"><strong>Q:</strong> Where does caching live? → <strong>A:</strong> In the repository. The data source just does I/O.</li>
+</ul>
+<p dir="rtl">مصادر: <a href="https://martinfowler.com/eaaCatalog/repository.html" target="_blank" rel="noopener">Fowler – Repository</a> · <a href="https://docs.flutter.dev/app-architecture/guide" target="_blank" rel="noopener">Flutter architecture guide</a></p>
+<hr />
+<h2 id="7-mvvm-architectural-pattern"><span class="num">7</span> <bdi>MVVM (Architectural Pattern)</bdi></h2>
+<p dir="rtl"><strong>1. ما هو؟</strong><br />
+تقسيم الـ presentation لـ 3:</p>
+<ul>
+<li dir="rtl"><strong>View:</strong> بيعرض.</li>
+<li dir="rtl"><strong>ViewModel:</strong> state + logic، وبيعمل expose لـ observable state.</li>
+<li dir="rtl"><strong>Model:</strong> البيانات والخدمات.</li>
+</ul>
+<p dir="rtl"><strong>2. ليه اتعمل؟</strong><br />
+عشان الـ UI يبقى "غبي" ويتختبر الـ logic من غير widgets.</p>
+<p dir="rtl"><strong>3. المشكلة</strong></p>
+<ul>
+<li dir="rtl"><strong>قبل:</strong> شاشة 1000 سطر فيها Firestore queries و filtering و <code>setState</code>.</li>
+<li dir="rtl"><strong>بعد:</strong> الشاشة بتعرض الـ state، والـ Cubit بيحسبه.</li>
+</ul>
+<p dir="rtl"><strong>4. بيشتغل إزاي؟</strong></p>
+<ul>
+<li dir="rtl">الـ View بيبعت events (<code>cubit.search(text)</code>).</li>
+<li dir="rtl">الـ ViewModel بيحدّث الـ state.</li>
+<li dir="rtl">الـ View بيعمل observe ويعيد الرسم.</li>
+</ul>
+<p dir="rtl"><strong>5. ليه في Flutter؟</strong><br />
+Flutter الرسمي بيوصي بـ MVVM (Views + ViewModels + Repositories + Services).</p>
+<p dir="rtl"><strong>6. امتى؟</strong></p>
+<ul>
+<li dir="rtl"><strong>مناسب:</strong> تقريباً أي شاشة فيها logic.</li>
+<li dir="rtl"><strong>زيادة:</strong> شاشة static (About).</li>
+</ul>
+<p dir="rtl"><strong>7. عيوبه</strong></p>
+<ul>
+<li dir="rtl">ViewModel ممكن يبقى ضخم (Cubit بـ 500+ سطر).</li>
+<li dir="rtl">Boilerplate للـ state.</li>
+</ul>
+<p dir="ltr"><strong>8. Interview</strong></p>
+<blockquote>
+<p dir="ltr"><strong>EN:</strong> "I use MVVM where the Cubit is the ViewModel. The screen only renders state and forwards user actions, and the Cubit owns filtering, ranking and data loading through services. States are immutable with Equatable. A common mistake is keeping a <code>TextEditingController</code> inside a state class. It belongs in the widget, because the ViewModel shouldn't hold UI objects."</p>
+<p dir="rtl"><strong>بالمصري:</strong> "الـ Cubit هو الـ ViewModel، والشاشة بتعرض بس."</p>
+</blockquote>
+<p dir="rtl"><strong>9. أسئلة متابعة</strong></p>
+<ul>
+<li dir="ltr"><strong>Q:</strong> Is Cubit = MVVM automatically? → <strong>A:</strong> No. If the screen still does data access or logic, it isn't MVVM.</li>
+<li dir="ltr"><strong>Q:</strong> Where do navigation and toasts go? → <strong>A:</strong> The ViewModel exposes a state or event, and the View performs it in a <code>BlocListener</code>.</li>
+</ul>
+<p dir="rtl">مصادر: <a href="https://docs.flutter.dev/app-architecture/guide" target="_blank" rel="noopener">Flutter – App architecture guide</a> · <a href="https://martinfowler.com/eaaDev/uiArchs.html" target="_blank" rel="noopener">Fowler – GUI Architectures</a></p>
+<hr />
+<h2 id="8-strategy"><span class="num">8</span> <bdi>Strategy</bdi></h2>
+<p dir="rtl"><strong>1. ما هو؟</strong><br />
+عيلة algorithms، كل واحد في object لوحده بنفس الـ interface، وتقدر تبدّلهم وقت التشغيل.</p>
+<p dir="rtl"><strong>2. ليه اتعمل؟</strong><br />
+عشان <code>if/else</code> الكبير بيتعدّل مع كل حالة جديدة ويكسر الكود القديم.</p>
+<p dir="rtl"><strong>3. المشكلة</strong></p>
+<ul>
+<li dir="rtl"><strong>قبل:</strong> <code>if (method == 'gps') ... else if ('qr') ...</code></li>
+<li dir="rtl"><strong>بعد:</strong> <code>CheckInService(GpsCheckIn())</code>، ولو عايز طريقة جديدة بتعمل class جديد.</li>
+</ul>
+<p dir="rtl"><strong>4. بيشتغل إزاي؟</strong></p>
+<ul>
+<li dir="ltr"><code>Strategy</code> interface.</li>
+<li dir="ltr">Concrete strategies.</li>
+<li dir="rtl">Context بيمسك strategy ويناديه.</li>
+</ul>
+<p dir="rtl">في Dart: الـ strategy ممكن تبقى <strong>function</strong> (<code>typedef</code>).</p>
+<p dir="rtl"><strong>5. ليه في Flutter؟</strong></p>
+<ul>
+<li dir="ltr">Check-in methods.</li>
+<li dir="ltr">Sorting.</li>
+<li dir="ltr">Pricing.</li>
+<li dir="ltr">Validation.</li>
+<li dir="rtl">Navigation لكل platform.</li>
+</ul>
+<p dir="rtl"><strong>6. امتى؟</strong></p>
+<ul>
+<li dir="rtl"><strong>مناسب:</strong> الحالات بتزيد، أو بتتبدل حسب config أو platform.</li>
+<li dir="rtl"><strong>زيادة:</strong> 2–3 حالات ثابتة. <code>switch</code> على enum أوضح.</li>
+</ul>
+<p dir="rtl"><strong>7. عيوبه</strong></p>
+<ul>
+<li dir="rtl">Classes أكتر.</li>
+<li dir="rtl">الـ client لازم يعرف يختار أنهي strategy.</li>
+<li dir="rtl">Static hooks صعب تختبرها.</li>
+</ul>
+<p dir="ltr"><strong>8. Interview</strong></p>
+<blockquote>
+<p dir="ltr"><strong>EN:</strong> "Strategy encapsulates interchangeable algorithms behind one interface. In Dart a function type works as a lightweight strategy. For example, screens can call an <code>AppNavigator.pushNamed</code> that uses Navigator on mobile, while a web build plugs in a go_router-based function at startup. Better still, inject the strategy instead of storing it in a static field."</p>
+<p dir="rtl"><strong>بالمصري:</strong> "بدّل الـ algorithm من غير ما تلمس اللي بيستخدمه."</p>
+</blockquote>
+<p dir="rtl"><strong>9. أسئلة متابعة</strong></p>
+<ul>
+<li dir="ltr"><strong>Q:</strong> Strategy vs State? → <strong>A:</strong> See comparison 8 in Part 2.</li>
+<li dir="ltr"><strong>Q:</strong> How does it relate to Open/Closed? → <strong>A:</strong> You add a new strategy class without modifying existing code.</li>
+</ul>
+<p dir="rtl">مصدر: <a href="https://refactoring.guru/design-patterns/strategy" target="_blank" rel="noopener">Strategy</a></p>
+<hr />
+<h2 id="9-adapter"><span class="num">9</span> <bdi>Adapter</bdi></h2>
+<p dir="rtl"><strong>1. ما هو؟</strong><br />
+Wrapper بيخلي class بـ interface مختلف يشتغل مع كود متوقع interface تاني.</p>
+<p dir="rtl"><strong>2. ليه اتعمل؟</strong><br />
+عشان تستخدم كود موجود (library، API قديم) من غير ما تعدله ومن غير ما تعدل الكود بتاعك.</p>
+<p dir="rtl"><strong>3. المشكلة</strong></p>
+<ul>
+<li dir="rtl"><strong>قبل:</strong> كل شاشة بتحول ساعات Odoo لأيام.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>OdooLeaveBalanceAdapter implements LeaveBalanceProvider</code>.</li>
+</ul>
+<p dir="rtl"><strong>4. بيشتغل إزاي؟</strong></p>
+<ul>
+<li dir="rtl"><strong>Target</strong> = الـ interface بتاعك.</li>
+<li dir="rtl"><strong>Adaptee</strong> = الـ class الغريب.</li>
+<li dir="rtl"><strong>Adapter</strong> = بيعمل implement للـ target وبيفوّض للـ adaptee مع الترجمة.</li>
+</ul>
+<p dir="rtl"><strong>5. ليه في Flutter؟</strong></p>
+<ul>
+<li dir="ltr">REST/ERP APIs.</li>
+<li dir="rtl">Plugins مختلفة لكل platform.</li>
+<li dir="rtl">مكتبات navigation مختلفة.</li>
+</ul>
+<p dir="rtl"><strong>6. امتى؟</strong></p>
+<ul>
+<li dir="rtl"><strong>مناسب:</strong> كود ما تقدرش تعدله، و interface مختلف.</li>
+<li dir="rtl"><strong>زيادة:</strong> لو تقدر تعدل الـ class نفسه بسهولة.</li>
+</ul>
+<p dir="rtl"><strong>7. عيوبه</strong></p>
+<ul>
+<li dir="rtl">طبقة زيادة.</li>
+<li dir="rtl">Adapters كتير = تعقيد.</li>
+<li dir="rtl">ترجمة ناقصة (<code>_ =&gt; null</code> بتبلع routes مش معروفة بصمت).</li>
+</ul>
+<p dir="ltr"><strong>8. Interview</strong></p>
+<blockquote>
+<p dir="ltr"><strong>EN:</strong> "An Adapter converts one interface into another that the client expects. For example, a web app that reuses mobile screens built with named routes can use a route bridge that translates those names into go_router paths, plus a small host widget that turns go_router's <code>extra</code> into the route arguments the screens expect. The screens don't need any changes."</p>
+<p dir="rtl"><strong>بالمصري:</strong> "مترجم بين اتنين بيتكلموا لغات مختلفة."</p>
+</blockquote>
+<p dir="rtl"><strong>9. أسئلة متابعة</strong></p>
+<ul>
+<li dir="ltr"><strong>Q:</strong> Object adapter vs class adapter? → <strong>A:</strong> An object adapter uses composition, which is the common choice in Dart. A class adapter uses inheritance from both, which Dart doesn't support for multiple classes.</li>
+<li dir="ltr"><strong>Q:</strong> Adapter vs Facade? → <strong>A:</strong> See comparisons.</li>
+</ul>
+<p dir="rtl">مصدر: <a href="https://refactoring.guru/design-patterns/adapter" target="_blank" rel="noopener">Adapter</a></p>
+<hr />
+<h2 id="10-service-locator"><span class="num">10</span> <bdi>Service Locator</bdi></h2>
+<p dir="rtl"><strong>1. ما هو؟</strong><br />
+Registry مركزي، والـ class بيطلب منه اللي محتاجه بالـ type: <code>locator.get&lt;T&gt;()</code>.</p>
+<p dir="rtl"><strong>2. ليه اتعمل؟</strong><br />
+عشان تجيب dependencies من غير ما تمررها في سلسلة constructors طويلة.</p>
+<p dir="rtl"><strong>3. المشكلة</strong></p>
+<ul>
+<li dir="rtl"><strong>قبل:</strong> تمرير service من <code>main</code> لحد شاشة جوه 5 مستويات.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>getIt&lt;AuthService&gt;()</code> من أي مكان.</li>
+</ul>
+<p dir="rtl"><strong>4. بيشتغل إزاي؟</strong></p>
+<ol>
+<li dir="rtl">Register عند البداية.</li>
+<li dir="rtl">Get وقت الحاجة.</li>
+</ol>
+<p dir="rtl"><strong>5. ليه في Flutter؟</strong></p>
+<ul>
+<li dir="rtl"><code>get_it</code> مشهور.</li>
+<li dir="rtl">مفيد في أماكن مفيهاش <code>BuildContext</code> (background handlers).</li>
+</ul>
+<p dir="rtl"><strong>6. امتى؟</strong></p>
+<ul>
+<li dir="rtl"><strong>مناسب:</strong> الحدود (composition، background isolate، legacy code).</li>
+<li dir="rtl"><strong>زيادة/خطر:</strong> جوه business classes.</li>
+</ul>
+<p dir="rtl"><strong>7. عيوبه</strong></p>
+<ul>
+<li dir="rtl">Dependencies مخفية.</li>
+<li dir="rtl">Crash وقت التشغيل لو نسيت register (في Flutter: <code>ProviderNotFoundException</code>، بتحصل مثلاً لما شاشة تتعرض في shell مش عامل provide للـ cubit بتاعها).</li>
+<li dir="rtl">Tests محتاجة reset للـ registry.</li>
+</ul>
+<p dir="ltr"><strong>8. Interview</strong></p>
+<blockquote>
+<p dir="ltr"><strong>EN:</strong> "A Service Locator is a registry that classes query for dependencies. It's convenient but hides dependencies and fails at runtime. In Flutter, <code>context.read&lt;T&gt;()</code> acts as a locator, so keep it at the edge, inside each screen's static builder, and then inject into the Cubit's constructor. A classic failure is <code>ProviderNotFoundException</code> when a shell hosts a screen without providing its Cubit's dependencies, which is exactly the locator downside."</p>
+<p dir="rtl"><strong>بالمصري:</strong> "الـ class بيسحب بدل ما يستلم. استخدمه على الأطراف بس."</p>
+</blockquote>
+<p dir="rtl"><strong>9. أسئلة متابعة</strong></p>
+<ul>
+<li dir="ltr"><strong>Q:</strong> Is get_it bad? → <strong>A:</strong> No. Register in one place and resolve at the edges, or combine it with constructor injection.</li>
+<li dir="ltr"><strong>Q:</strong> How do you test code using get_it? → <strong>A:</strong> <code>getIt.reset()</code> and register fakes in <code>setUp</code>.</li>
+</ul>
+<p dir="rtl">مصادر: <a href="https://martinfowler.com/articles/injection.html" target="_blank" rel="noopener">Fowler – Service Locator vs DI</a> · <a href="https://pub.dev/packages/get_it" target="_blank" rel="noopener">get_it</a></p>
+<hr />
+<h2 id="11-command"><span class="num">11</span> <bdi>Command</bdi></h2>
+<p dir="rtl"><strong>1. ما هو؟</strong><br />
+تحويل <strong>طلب/عملية</strong> لـ object، فتقدر تخزنه في queue أو تأجله أو تعيده أو تلغيه (undo) أو تسجله.</p>
+<p dir="rtl"><strong>2. ليه اتعمل؟</strong><br />
+عشان تفصل "مين بيطلب" عن "إمتى وإزاي يتنفذ".</p>
+<p dir="rtl"><strong>3. المشكلة</strong></p>
+<ul>
+<li dir="rtl"><strong>قبل:</strong> check-in والنت فاصل، فالطلب بيضيع.</li>
+<li dir="rtl"><strong>بعد:</strong> <code>CheckInCommand</code> في queue، ويتنفذ لما النت يرجع.</li>
+</ul>
+<p dir="rtl"><strong>4. بيشتغل إزاي؟</strong></p>
+<ul>
+<li dir="rtl"><code>Command</code> فيه <code>execute()</code> (واختياري <code>undo()</code>).</li>
+<li dir="rtl">Invoker (queue) بيخزن وينفذ.</li>
+</ul>
+<p dir="rtl">في Dart ممكن الـ command يبقى closure.</p>
+<p dir="rtl"><strong>5. ليه في Flutter؟</strong></p>
+<ul>
+<li dir="ltr">Offline queues.</li>
+<li dir="ltr">Undo/redo.</li>
+<li dir="rtl">Flutter docs بيستخدمه في الـ ViewModels عشان كل action يبقى ليه running/error state.</li>
+</ul>
+<p dir="rtl"><strong>6. امتى؟</strong></p>
+<ul>
+<li dir="rtl"><strong>مناسب:</strong> retry/offline، undo، audit log، actions محتاجة loading state مستقل.</li>
+<li dir="rtl"><strong>زيادة:</strong> لو الـ backend بيعمل queue لوحده.</li>
+</ul>
+<p dir="rtl"><strong>7. عيوبه</strong></p>
+<ul>
+<li dir="rtl">Classes أكتر.</li>
+<li dir="rtl">Idempotency: نفس الـ command ممكن يتنفذ مرتين بعد reconnect.</li>
+<li dir="rtl">In-memory queue بيضيع لو الـ app اتقفل.</li>
+</ul>
+<p dir="ltr"><strong>8. Interview</strong></p>
+<blockquote>
+<p dir="ltr"><strong>EN:</strong> "Command turns an action into an object, so it can be queued, retried or undone. A network layer can keep a request queue that stores closures while offline and flushes them on reconnect. But if your data goes through Firestore, it already queues writes offline, so a second queue is duplication. Don't rebuild what the platform gives you."</p>
+<p dir="rtl"><strong>بالمصري:</strong> "العملية بقت object تقدر تأجلها. ومش هعمل queue لو Firestore عامله أصلاً."</p>
+</blockquote>
+<p dir="rtl"><strong>9. أسئلة متابعة</strong></p>
+<ul>
+<li dir="ltr"><strong>Q:</strong> How do you avoid duplicate execution after a retry? → <strong>A:</strong> Give each command an id and have the server dedupe on it (idempotency key).</li>
+<li dir="ltr"><strong>Q:</strong> How do you persist the queue? → <strong>A:</strong> Store serializable command data (not closures) locally, e.g. in Hive or SQLite.</li>
+</ul>
+<p dir="rtl">مصادر: <a href="https://refactoring.guru/design-patterns/command" target="_blank" rel="noopener">Command</a> · <a href="https://docs.flutter.dev/app-architecture/design-patterns/command" target="_blank" rel="noopener">Flutter – Command pattern</a></p>
+<hr />
+<h1 id="الجزء-التاني-المقارنات">الجزء التاني — المقارنات</h1>
+<h2 id="1-singleton-vs-factory"><span class="num">1</span> <bdi>Singleton vs Factory</bdi></h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th dir="auto"></th>
+<th dir="ltr">Singleton</th>
+<th dir="ltr">Factory</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="rtl"><strong>الفرق الأساسي</strong></td>
+<td dir="rtl">بيضمن <strong>عدد</strong> النسخ (واحدة)</td>
+<td dir="rtl">بيقرر <strong>إزاي/أنهي</strong> نسخة تتعمل</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>بيحل</strong></td>
+<td dir="rtl">مورد مشترك واحد</td>
+<td dir="rtl">منطق إنشاء متكرر أو معقد</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>امتى الأول</strong></td>
+<td dir="rtl">cache، logger، connectivity monitor</td>
+<td dir="auto">—</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>امتى التاني</strong></td>
+<td dir="auto">—</td>
+<td dir="rtl">parsing، اختيار نوع، fallback</td>
+</tr>
+</tbody>
+</table></div>
+<p dir="rtl"><strong>مثال Flutter:</strong></p>
+<ul>
+<li dir="auto"><code>LocalStorage.instance</code></li>
+<li dir="auto"><code>UserProfileModel.fromFirestore(doc)</code></li>
+</ul>
+<p dir="rtl"><strong>تميز بينهم في الكود:</strong></p>
+<ul>
+<li dir="ltr">private constructor + <code>static instance</code> = Singleton.</li>
+<li dir="rtl"><code>factory X.fromY</code> أو <code>static X create(...)</code> بيرجع objects مختلفة = Factory.</li>
+</ul>
+<p dir="rtl"><strong>ممكن يتجمعوا:</strong> <code>factory X() =&gt; _instance;</code> (factory بيرجّع singleton).</p>
+<p dir="rtl"><strong>سؤال:</strong> "Can a factory return a singleton?"</p>
+<blockquote>
+<p dir="ltr">Yes, a Dart factory constructor can return a cached instance. That's a common way to implement a singleton.</p>
+</blockquote>
+<h2 id="2-factory-vs-abstract-factory"><span class="num">2</span> <bdi>Factory vs Abstract Factory</bdi></h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th dir="auto"></th>
+<th dir="ltr">Factory (Simple / Method)</th>
+<th dir="ltr">Abstract Factory</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="rtl"><strong>الفرق الأساسي</strong></td>
+<td dir="rtl">بيعمل <strong>منتج واحد</strong></td>
+<td dir="rtl">بيعمل <strong>عيلة منتجات</strong> لازم تتماشى مع بعض</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>بيحل</strong></td>
+<td dir="rtl">منطق الإنشاء</td>
+<td dir="rtl">التناسق بين منتجات مرتبطة</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>امتى الأول</strong></td>
+<td dir="rtl">notification حسب النوع</td>
+<td dir="auto">—</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>امتى التاني</strong></td>
+<td dir="auto">—</td>
+<td dir="rtl"><code>MaterialUiFactory</code> / <code>CupertinoUiFactory</code> بيعملوا Button + Dialog + Switch</td>
+</tr>
+</tbody>
+</table></div>
+<p dir="rtl"><strong>تميز بينهم:</strong> Abstract Factory = interface فيه <strong>أكتر من</strong> <code>createX()</code>، وليه أكتر من implementation.</p>
+<p dir="rtl"><strong>سؤال:</strong> "When would you use Abstract Factory in Flutter?"</p>
+<blockquote>
+<p dir="ltr">Rarely. Platform widget families or white-label apps, where each brand needs a matching set of services.</p>
+</blockquote>
+<h2 id="3-repository-vs-service"><span class="num">3</span> <bdi>Repository vs Service</bdi></h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th dir="auto"></th>
+<th dir="ltr">Repository</th>
+<th dir="ltr">Service</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="rtl"><strong>الفرق الأساسي</strong></td>
+<td dir="rtl">بيمثل <strong>البيانات</strong> (collection-like) بلغة الـ domain</td>
+<td dir="rtl">بيعمل <strong>عملية</strong> أو بيلف SDK</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>بيحل</strong></td>
+<td dir="rtl">فصل الـ business عن مصادر البيانات + cache + mapping</td>
+<td dir="rtl">تجميع operation (send notification, auth)</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>امتى الأول</strong></td>
+<td dir="auto"><code>EmployeeRepository.getEmployee</code></td>
+<td dir="auto">—</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>امتى التاني</strong></td>
+<td dir="auto">—</td>
+<td dir="rtl"><code>NotificationService.send</code>، <code>AuthService</code></td>
+</tr>
+</tbody>
+</table></div>
+<p dir="rtl"><strong>غلطة شائعة:</strong> class واحد اسمه <code>XService</code> بيعمل الاتنين مع بعض (data access + mapping).</p>
+<p dir="rtl"><strong>في Flutter docs:</strong> Services = أدنى طبقة بتلف APIs، و Repositories فوقيها.</p>
+<p dir="rtl"><strong>تميز بينهم:</strong></p>
+<ul>
+<li dir="rtl">Methods زي <code>get/watch/save</code> بترجع models = repository.</li>
+<li dir="rtl">Methods بأفعال (<code>send</code>, <code>upload</code>, <code>signIn</code>) = service.</li>
+</ul>
+<p dir="rtl"><strong>سؤال:</strong> "A class that reads Firestore and returns models — repository or service?"</p>
+<blockquote>
+<p dir="ltr">Both. It's a data source plus a repository without an interface. I'd split raw Firestore access from mapping and caching.</p>
+</blockquote>
+<h2 id="4-repository-vs-data-source"><span class="num">4</span> <bdi>Repository vs Data Source</bdi></h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th dir="auto"></th>
+<th dir="ltr">Repository</th>
+<th dir="ltr">Data Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="rtl"><strong>الفرق الأساسي</strong></td>
+<td dir="rtl">بيجمع مصادر ويقرر</td>
+<td dir="rtl">مصدر واحد، I/O خام</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>بيحل</strong></td>
+<td dir="rtl">source of truth، cache، mapping</td>
+<td dir="rtl">التعامل مع backend معين</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>امتى الأول</strong></td>
+<td dir="rtl">دايماً قدام الـ Cubit</td>
+<td dir="auto">—</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>امتى التاني</strong></td>
+<td dir="auto">—</td>
+<td dir="rtl"><code>RemoteAttendanceDataSource</code> (Firestore)، <code>LocalAttendanceDataSource</code> (Hive)</td>
+</tr>
+</tbody>
+</table></div>
+<p dir="rtl"><strong>تميز بينهم:</strong></p>
+<ul>
+<li dir="rtl">Data source بيرجع maps/DTOs.</li>
+<li dir="rtl">Repository بيرجع models وبيمسك أكتر من data source.</li>
+</ul>
+<p dir="rtl"><strong>سؤال:</strong> "Why not let the Cubit use the data source directly?"</p>
+<blockquote>
+<p dir="ltr">Then the Cubit would decide caching and mapping, and changing the backend would touch every Cubit.</p>
+</blockquote>
+<h2 id="5-dependency-injection-vs-service-locator"><span class="num">5</span> <bdi>Dependency Injection vs Service Locator</bdi></h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th dir="auto"></th>
+<th dir="ltr">DI</th>
+<th dir="ltr">Service Locator</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="rtl"><strong>الفرق الأساسي</strong></td>
+<td dir="rtl">الـ dependency <strong>بتتدفع</strong> للـ class</td>
+<td dir="rtl">الـ class <strong>بيسحبها</strong></td>
+</tr>
+<tr>
+<td dir="rtl"><strong>باينة؟</strong></td>
+<td dir="rtl">أيوه في الـ constructor</td>
+<td dir="rtl">لأ، جوه الـ methods</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>الخطأ امتى؟</strong></td>
+<td dir="ltr">Compile time</td>
+<td dir="ltr">Runtime</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>امتى الأول</strong></td>
+<td dir="rtl">business classes، Cubits</td>
+<td dir="auto">—</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>امتى التاني</strong></td>
+<td dir="auto">—</td>
+<td dir="rtl">الأطراف، background handlers</td>
+</tr>
+</tbody>
+</table></div>
+<p dir="rtl"><strong>مثال:</strong></p>
+<ul>
+<li dir="auto"><code>ProfileCubit(EmployeeRepository repo)</code></li>
+<li dir="auto"><code>getIt&lt;EmployeeRepository&gt;()</code></li>
+</ul>
+<p dir="rtl"><strong>تميز بينهم:</strong> دوّر على <code>.get&lt;</code>، أو <code>context.read</code> جوه logic، أو <code>X.instance</code> جوه methods.</p>
+<p dir="rtl"><strong>سؤال:</strong> "Is Provider DI or a Service Locator?"</p>
+<blockquote>
+<p dir="ltr">The tree-scoped providers are DI-like. <code>context.read</code> is a lookup, so I keep it at the edge and inject into the Cubit.</p>
+</blockquote>
+<h2 id="6-mvc-vs-mvp-vs-mvvm"><span class="num">6</span> <bdi>MVC vs MVP vs MVVM</bdi></h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th dir="auto"></th>
+<th dir="ltr">MVC</th>
+<th dir="ltr">MVP</th>
+<th dir="ltr">MVVM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="rtl"><strong>الوسيط</strong></td>
+<td dir="ltr">Controller</td>
+<td dir="ltr">Presenter</td>
+<td dir="ltr">ViewModel</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>العلاقة بالـ View</strong></td>
+<td dir="rtl">Controller بيستقبل input ويحدّث Model، والـ View بتقرا Model</td>
+<td dir="rtl">Presenter ماسك reference لـ View <strong>interface</strong> وبيقوله "اعرض كذا"</td>
+<td dir="rtl">ViewModel <strong>ما يعرفش</strong> الـ View. الـ View بيعمل observe</td>
+</tr>
+<tr>
+<td dir="ltr"><strong>Testing</strong></td>
+<td dir="rtl">صعب</td>
+<td dir="rtl">Presenter سهل (mock view)</td>
+<td dir="rtl">ViewModel سهل</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>في Flutter</strong></td>
+<td dir="rtl">نادر</td>
+<td dir="rtl">نادر</td>
+<td dir="rtl">الأشهر (Cubit/ChangeNotifier)</td>
+</tr>
+</tbody>
+</table></div>
+<p dir="rtl"><strong>تميز بينهم:</strong></p>
+<ul>
+<li dir="rtl">لو الوسيط بينادي <code>view.showLoading()</code> = MVP.</li>
+<li dir="rtl">لو بيعمل <code>emit(state)</code> والـ View بيسمع = MVVM.</li>
+</ul>
+<p dir="rtl"><strong>سؤال:</strong> "Which does BLoC resemble?"</p>
+<blockquote>
+<p dir="ltr">MVVM. The Bloc or Cubit exposes a state stream that the view observes, and it holds no reference to the view.</p>
+</blockquote>
+<h2 id="7-observer-vs-stream"><span class="num">7</span> <bdi>Observer vs Stream</bdi></h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th dir="auto"></th>
+<th dir="ltr">Observer</th>
+<th dir="ltr">Stream</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="rtl"><strong>إيه هو</strong></td>
+<td dir="rtl"><strong>Pattern</strong> (فكرة)</td>
+<td dir="rtl"><strong>Implementation</strong> في Dart للفكرة دي (async)</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>فيه زيادة</strong></td>
+<td dir="auto">—</td>
+<td dir="rtl">async، errors، done، operators (<code>map</code>, <code>where</code>)، backpressure</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>امتى الأول (بشكل يدوي)</strong></td>
+<td dir="rtl">listeners بسيطة sync: <code>ChangeNotifier</code>, <code>ValueNotifier</code></td>
+<td dir="auto">—</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>امتى التاني</strong></td>
+<td dir="auto">—</td>
+<td dir="rtl">events متتالية async: Firestore، websocket، Bloc</td>
+</tr>
+</tbody>
+</table></div>
+<p dir="rtl"><strong>تميز بينهم:</strong></p>
+<ul>
+<li dir="rtl"><code>addListener</code> / <code>notifyListeners</code> = observer كلاسيكي sync.</li>
+<li dir="rtl"><code>Stream</code> / <code>listen</code> = نسخة async.</li>
+</ul>
+<p dir="rtl"><strong>سؤال:</strong> "ChangeNotifier vs Stream?"</p>
+<blockquote>
+<p dir="ltr">ChangeNotifier is synchronous with no payload, so listeners read state. A Stream carries values and errors asynchronously and supports transformations.</p>
+</blockquote>
+<h2 id="8-strategy-vs-state"><span class="num">8</span> <bdi>Strategy vs State</bdi></h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th dir="auto"></th>
+<th dir="ltr">Strategy</th>
+<th dir="ltr">State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="rtl"><strong>مين بيبدل</strong></td>
+<td dir="rtl"><strong>الـ client من برة</strong> بيختار</td>
+<td dir="rtl"><strong>الـ object نفسه</strong> بيبدل الـ state بعد كل action</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>الـ strategies تعرف بعض؟</strong></td>
+<td dir="rtl">لأ</td>
+<td dir="rtl">أيوه، كل state بيرجّع الـ state اللي بعده</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>بيحل</strong></td>
+<td dir="rtl">algorithms بديلة</td>
+<td dir="rtl">سلوك بيتغير حسب الحالة + transitions</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>مثال</strong></td>
+<td dir="ltr">GPS/QR/Wi-Fi check-in</td>
+<td dir="ltr">Leave: Draft → Submitted → Approved</td>
+</tr>
+</tbody>
+</table></div>
+<p dir="rtl"><strong>تميز بينهم:</strong></p>
+<ul>
+<li dir="rtl">لو methods بترجّع state جديد = State.</li>
+<li dir="rtl">لو حد من برة بيعمل <code>setStrategy</code> = Strategy.</li>
+</ul>
+<p dir="rtl"><strong>سؤال:</strong> "Both look the same in UML. What's the difference?"</p>
+<blockquote>
+<p dir="ltr">Intent and who drives the switch. In Strategy, the client picks the algorithm. In State, transitions happen internally as a result of actions.</p>
+</blockquote>
+<h2 id="9-builder-vs-factory"><span class="num">9</span> <bdi>Builder vs Factory</bdi></h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th dir="auto"></th>
+<th dir="ltr">Builder</th>
+<th dir="ltr">Factory</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="rtl"><strong>الإنشاء</strong></td>
+<td dir="rtl"><strong>خطوات</strong> متعددة، وبعدين <code>build()</code></td>
+<td dir="rtl"><strong>call واحدة</strong></td>
+</tr>
+<tr>
+<td dir="rtl"><strong>بيحل</strong></td>
+<td dir="rtl">objects بـ parts كتير اختيارية + validation</td>
+<td dir="rtl">اختيار نوع/منطق إنشاء</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>مثال</strong></td>
+<td dir="auto"><code>ReportRequestBuilder().between().dept().build()</code></td>
+<td dir="auto"><code>AppNotification.forKind(kind)</code></td>
+</tr>
+</tbody>
+</table></div>
+<p dir="rtl"><strong>ملاحظة Dart:</strong> named parameters بتقلل الحاجة للـ Builder. و <code>static Widget builder(context)</code> على الشاشات = factory، <strong>مش</strong> Builder.</p>
+<p dir="rtl"><strong>تميز بينهم:</strong> chain من methods بترجع <code>this</code> وتنتهي بـ <code>build()</code> = Builder.</p>
+<p dir="rtl"><strong>سؤال:</strong> "Why is Builder less common in Dart than Java?"</p>
+<blockquote>
+<p dir="ltr">Named and optional parameters with defaults solve telescoping constructors.</p>
+</blockquote>
+<h2 id="10-architecture-vs-design-pattern"><span class="num">10</span> <bdi>Architecture vs Design Pattern</bdi></h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th dir="auto"></th>
+<th dir="ltr">Architecture</th>
+<th dir="ltr">Design Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="rtl"><strong>النطاق</strong></td>
+<td dir="rtl">التطبيق كله</td>
+<td dir="rtl">classes قليلة</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>بيحدد</strong></td>
+<td dir="rtl">layers، اتجاه الـ dependencies، boundaries</td>
+<td dir="rtl">تفاعل objects لحل مشكلة محلية</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>أمثلة</strong></td>
+<td dir="rtl">MVVM، Clean، Layered</td>
+<td dir="rtl">Strategy، Adapter، Observer</td>
+</tr>
+<tr>
+<td dir="rtl"><strong>مثال Flutter</strong></td>
+<td dir="ltr">Feature-first layered + MVVM presentation</td>
+<td dir="rtl">Facade، Observer، Singleton… جوه الـ layers</td>
+</tr>
+</tbody>
+</table></div>
+<p dir="rtl"><strong>تميز بينهم:</strong></p>
+<ul>
+<li dir="rtl">لو بتتكلم عن "مين يعرف مين بين الفولدرات/الـ packages" = architecture.</li>
+<li dir="rtl">لو عن "إزاي الـ 3 classes دول بيتعاملوا" = pattern.</li>
+</ul>
+<p dir="rtl"><strong>سؤال:</strong> "Describe your project's architecture without naming patterns."</p>
+<blockquote>
+<p dir="ltr">Screens render state from Cubits. Cubits hold UI logic and call service classes that wrap Firebase. All services are created in one composition root and injected.</p>
+</blockquote>
+<hr />
+<h1 id="الجزء-التالت-أنماط-لسه-هتتعلمها-مختصر">الجزء التالت — أنماط لسه هتتعلمها (مختصر)</h1>
+<h2 id="clean-architecture-architectural"><bdi>Clean Architecture (Architectural)</bdi></h2>
+<ul>
+<li dir="rtl"><strong>المشكلة:</strong> الـ business logic مربوط بـ Firebase والـ UI.</li>
+<li dir="rtl"><strong>الفكرة:</strong> Domain (entities + use cases + repo interfaces) في النص. Data و Presentation بيعتمدوا عليه. <strong>Dependency Rule:</strong> الأسهم بتشاور للداخل.</li>
+<li dir="rtl"><strong>علامة إنك محتاجه:</strong> <code>core/</code> بيستورد من <code>features/</code>، أو فيه package cycle.</li>
+<li dir="rtl"><strong>امتى زيادة:</strong> app صغير. use case بيعمل <code>return repo.x()</code> بس.</li>
+<li dir="rtl"><strong>مصدر:</strong> <a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html" target="_blank" rel="noopener">The Clean Architecture</a></li>
+</ul>
+<h2 id="result-type-error-handling"><bdi>Result type (Error handling)</bdi></h2>
+<ul>
+<li dir="rtl"><strong>المشكلة:</strong> الـ signature بيكدب، <code>Future&lt;T&gt;</code> ممكن يرمي.</li>
+<li dir="rtl"><strong>الفكرة:</strong> <code>sealed class Result&lt;T&gt;</code> (<code>Ok</code> / <code>Err</code>) + switch exhaustive.</li>
+<li dir="rtl"><strong>الخطوة الطبيعية:</strong> لو عندك <code>Failure</code> classes، الـ <code>Result</code> هو اللي بعدها.</li>
+<li dir="rtl"><strong>مصدر:</strong> <a href="https://docs.flutter.dev/app-architecture/design-patterns/result" target="_blank" rel="noopener">Flutter – Result</a></li>
+</ul>
+<h2 id="decorator-gof-structural"><bdi>Decorator (GoF – Structural)</bdi></h2>
+<ul>
+<li dir="rtl"><strong>المشكلة:</strong> عايز تضيف cache/log/retry من غير ما تعدل الـ class.</li>
+<li dir="rtl"><strong>الفكرة:</strong> wrapper بنفس الـ interface بيلف التاني.</li>
+<li dir="rtl"><strong>في Flutter:</strong> widget wrappers هي نفس الفكرة على مستوى الـ UI.</li>
+<li dir="rtl"><strong>مثال:</strong> <a class="ex-link" href="examples.html#ex-10"><code>10_decorator_cached_repository.dart</code></a></li>
+<li dir="rtl"><strong>مصدر:</strong> <a href="https://refactoring.guru/design-patterns/decorator" target="_blank" rel="noopener">Decorator</a></li>
+</ul>
+<h2 id="state-gof-behavioral"><bdi>State (GoF – Behavioral)</bdi></h2>
+<ul>
+<li dir="rtl"><strong>المشكلة:</strong> <code>if (status == ...)</code> في كل method.</li>
+<li dir="rtl"><strong>الفكرة:</strong> كل state object بيقرر الـ actions والـ transitions.</li>
+<li dir="rtl"><strong>ملاحظة:</strong> enum (<code>idle/loading/success/error</code>) كفاية للـ UI status البسيط.</li>
+<li dir="rtl"><strong>مثال:</strong> <a class="ex-link" href="examples.html#ex-12"><code>12_state_leave_request.dart</code></a></li>
+<li dir="rtl"><strong>مصدر:</strong> <a href="https://refactoring.guru/design-patterns/state" target="_blank" rel="noopener">State</a></li>
+</ul>
+<h2 id="builder-gof-creational"><bdi>Builder (GoF – Creational)</bdi></h2>
+<ul>
+<li dir="rtl"><strong>المشكلة:</strong> constructor بـ parameters كتير.</li>
+<li dir="rtl"><strong>الفكرة:</strong> بناء خطوة بخطوة + <code>build()</code>.</li>
+<li dir="rtl"><strong>ملاحظة:</strong> <code>static Widget builder(context)</code> = factory، مش Builder.</li>
+<li dir="rtl"><strong>مثال:</strong> <a class="ex-link" href="examples.html#ex-13"><code>13_builder_report_request.dart</code></a></li>
+<li dir="rtl"><strong>مصدر:</strong> <a href="https://refactoring.guru/design-patterns/builder" target="_blank" rel="noopener">Builder</a></li>
+</ul>
+<h2 id="factory-method-gof-creational"><bdi>Factory Method (GoF – Creational)</bdi></h2>
+<ul>
+<li dir="rtl"><strong>المشكلة:</strong> الـ superclass عنده algorithm، بس نوع الـ object اللي بيتعمل جواه يختلف حسب الـ subclass.</li>
+<li dir="rtl"><strong>الفكرة:</strong> <code>abstract Widget createButton();</code> والـ subclasses بتعمل override.</li>
+<li dir="rtl"><strong>ملاحظة:</strong> نادر في Flutter apps.</li>
+<li dir="rtl"><strong>مصدر:</strong> <a href="https://refactoring.guru/design-patterns/factory-method" target="_blank" rel="noopener">Factory Method</a></li>
+</ul>
+<h2 id="abstract-factory-gof-creational"><bdi>Abstract Factory (GoF – Creational)</bdi></h2>
+<ul>
+<li dir="rtl"><strong>المشكلة:</strong> عيلة objects لازم تتماشى مع بعض.</li>
+<li dir="rtl"><strong>ملاحظة:</strong> نادر في Flutter.</li>
+<li dir="rtl"><strong>مصدر:</strong> <a href="https://refactoring.guru/design-patterns/abstract-factory" target="_blank" rel="noopener">Abstract Factory</a></li>
+</ul>
+<h2 id="prototype-gof-creational"><bdi>Prototype (GoF – Creational)</bdi></h2>
+<ul>
+<li dir="rtl"><strong>المشكلة:</strong> تعمل نسخة من object من غير ما تعرف الـ class بتاعه بالظبط.</li>
+<li dir="rtl"><strong>في Dart:</strong> <code>copyWith</code> شبهه، بس مش polymorphic.</li>
+<li dir="rtl"><strong>مصدر:</strong> <a href="https://refactoring.guru/design-patterns/prototype" target="_blank" rel="noopener">Prototype</a></li>
+</ul>
+<h2 id="chain-of-responsibility-bonus"><bdi>Chain of Responsibility (bonus)</bdi></h2>
+<ul>
+<li dir="rtl"><strong>الفكرة:</strong> الطلب بيعدي على سلسلة handlers، وكل واحد يكمّل (<code>next</code>) أو يوقف (<code>reject</code>).</li>
+<li dir="rtl"><strong>في Flutter:</strong> Dio interceptors (interceptor بيعمل <code>handler.reject</code> لو offline، وإلا <code>handler.next</code>).</li>
+<li dir="rtl"><strong>مصدر:</strong> <a href="https://refactoring.guru/design-patterns/chain-of-responsibility" target="_blank" rel="noopener">Chain of Responsibility</a></li>
+</ul>
+<hr />
+<h2 id="المصادر-الرئيسية">المصادر الرئيسية</h2>
+<ul>
+<li dir="ltr">Flutter — <a href="https://docs.flutter.dev/app-architecture/guide" target="_blank" rel="noopener">App architecture guide</a> · <a href="https://docs.flutter.dev/app-architecture/recommendations" target="_blank" rel="noopener">Recommendations</a> · <a href="https://docs.flutter.dev/app-architecture/design-patterns/command" target="_blank" rel="noopener">Command</a> · <a href="https://docs.flutter.dev/app-architecture/design-patterns/result" target="_blank" rel="noopener">Result</a></li>
+<li dir="ltr">Dart — <a href="https://dart.dev/language/constructors" target="_blank" rel="noopener">Constructors</a> · <a href="https://dart.dev/language/class-modifiers" target="_blank" rel="noopener">Class modifiers</a> · <a href="https://dart.dev/libraries/async/using-streams" target="_blank" rel="noopener">Streams</a></li>
+<li dir="ltr">bloc — <a href="https://bloclibrary.dev/architecture/" target="_blank" rel="noopener">Architecture</a> · <a href="https://bloclibrary.dev/flutter-bloc-concepts/" target="_blank" rel="noopener">Flutter Bloc concepts</a></li>
+<li dir="ltr">GoF catalog — <a href="https://refactoring.guru/design-patterns/catalog" target="_blank" rel="noopener">refactoring.guru</a></li>
+<li dir="ltr">Martin Fowler — <a href="https://martinfowler.com/eaaCatalog/repository.html" target="_blank" rel="noopener">Repository</a> · <a href="https://martinfowler.com/eaaCatalog/dataMapper.html" target="_blank" rel="noopener">Data Mapper</a> · <a href="https://martinfowler.com/eaaCatalog/serviceLayer.html" target="_blank" rel="noopener">Service Layer</a> · <a href="https://martinfowler.com/articles/injection.html" target="_blank" rel="noopener">DI &amp; Service Locator</a> · <a href="https://martinfowler.com/eaaDev/uiArchs.html" target="_blank" rel="noopener">GUI Architectures</a></li>
+<li dir="ltr">Robert C. Martin — <a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html" target="_blank" rel="noopener">The Clean Architecture</a></li>
+</ul></main>
+</div>
+<footer class="footer">
+  <p>محتوى تعليمي عام عن الـ Design Patterns في Flutter و Dart. المصادر الأصلية مذكورة جنب كل جزء.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dart.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

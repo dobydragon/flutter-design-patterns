@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flutter Design Patterns — بالمصري</title>
+<meta name="description" content="دليل مذاكرة عملي للـ Design Patterns في Flutter: شرح بالمصري، أمثلة Dart، أسئلة interview، وخطة مذاكرة.">
+<meta property="og:title" content="Flutter Design Patterns — بالمصري">
+<meta property="og:description" content="دليل مذاكرة عملي للـ Design Patterns في Flutter: شرح بالمصري، أمثلة Dart، أسئلة interview، وخطة مذاكرة.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://dobydragon.github.io/flutter-design-patterns/">
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+
+</head>
+<body>
+<a class="skip" href="#content">تخطى للمحتوى</a>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html"><img src="icons/favicon.svg" alt="" width="28" height="28"><bdi>Flutter Design Patterns</bdi></a>
+    <button class="menu-btn" aria-expanded="false" aria-controls="nav" aria-label="القائمة">☰</button>
+    <nav id="nav" class="nav"><a href="index.html" aria-current="page">الرئيسية</a><a href="guide.html">الدليل</a><a href="examples.html">الأمثلة</a><a href="interview.html">أسئلة الـ Interview</a><a href="roadmap.html">خطة المذاكرة</a></nav>
+    <button class="theme-btn" type="button" aria-label="تبديل الوضع الليلي">◐</button>
+  </div>
+</header>
+<main id="content" class="content wide">
+<section class="hero">
+  <p class="eyebrow"><bdi>Flutter · Dart · Design Patterns</bdi></p>
+  <h1>اتعلم الـ Design Patterns في Flutter <span class="accent">بالمصري</span></h1>
+  <p class="lead">شرح بسيط لكل pattern بتقابله في Flutter app، بأمثلة Dart تشغلها بنفسك، وإجابات جاهزة للـ interview.</p>
+  <div class="hero-actions">
+    <a class="btn primary" href="guide.html">ابدأ بالدليل</a>
+    <a class="btn" href="examples.html">شوف الأمثلة</a>
+  </div>
+</section>
+<section class="cards"><a class="card" href="guide.html"><span class="card-meta">11 + 10 مقارنة + 9 لسه هتتعلمها</span><h2>الدليل</h2><p>11 pattern أساسي، كل واحد: ما هو، المشكلة، بيشتغل إزاي، امتى تستخدمه، عيوبه، وإجابة الـ interview.</p><span class="card-go">افتح ←</span></a><a class="card" href="examples.html"><span class="card-meta">14 مثال</span><h2>الأمثلة العملية</h2><p>ملفات Dart صافية تشغلها بـ dart run. كل ملف فيه BEFORE و AFTER والـ main بيطبع الفرق.</p><span class="card-go">افتح ←</span></a><a class="card" href="interview.html"><span class="card-meta">23 سؤال + اعرف الـ pattern من الكود</span><h2>أسئلة الـ Interview</h2><p>من Junior لـ Senior. الإجابة بالإنجليزي زي ما هتقولها، وتحتها الفكرة بالمصري.</p><span class="card-go">افتح ←</span></a><a class="card" href="roadmap.html"><span class="card-meta">4 مراحل + جدول 9 أسابيع</span><h2>خطة المذاكرة</h2><p>تبدأ بالـ interfaces و SOLID، وبعدين الأنماط الأكثر استخداماً، وبعدين الـ Architecture.</p><span class="card-go">افتح ←</span></a></section>
+<section class="intro"><p dir="rtl">الدليل ده 3 أجزاء:</p>
+<ol>
+<li dir="rtl"><strong>الجزء الأول:</strong> الأنماط اللي <strong>هتقابلها في أي Flutter app تقريباً</strong> (11 pattern). كل واحد بنفس الـ 9 نقط.</li>
+<li dir="rtl"><strong>الجزء التاني:</strong> مقارنات بين الأنماط اللي بتتلخبط (10 مقارنات).</li>
+<li dir="rtl"><strong>الجزء التالت:</strong> الأنماط اللي <strong>لسه هتتعلمها</strong>، بشكل مختصر.</li>
+</ol>
+<p dir="rtl"><strong>إزاي تذاكره:</strong> pattern واحد في اليوم. اقرا ← دوّر عليه في كود مشروعك ← شغّل المثال من <a href="examples.html">الأمثلة العملية</a> ← قول إجابة الـ interview بصوت عالي.</p>
+<p dir="rtl"><strong>تصنيف مهم:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th dir="rtl">النوع</th>
+<th dir="rtl">أمثلة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="ltr">Design Pattern (GoF)</td>
+<td dir="ltr">Singleton, Factory Method, Abstract Factory, Builder, Prototype, Adapter, Decorator, Facade, Observer, Strategy, State, Command</td>
+</tr>
+<tr>
+<td dir="ltr">Architectural Pattern</td>
+<td dir="ltr">MVC, MVP, MVVM, Clean Architecture</td>
+</tr>
+<tr>
+<td dir="ltr">DI / Enterprise technique</td>
+<td dir="ltr">Dependency Injection, Service Locator, Repository, Data Mapper</td>
+</tr>
+<tr>
+<td dir="ltr">Principle</td>
+<td dir="ltr">SOLID, Separation of Concerns</td>
+</tr>
+</tbody>
+</table></div></section>
+</main>
+<footer class="footer">
+  <p>محتوى تعليمي عام عن الـ Design Patterns في Flutter و Dart. المصادر الأصلية مذكورة جنب كل جزء.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dart.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>خطة المذاكرة · Flutter Design Patterns</title>
+<meta name="description" content="خطة على مراحل لتعلم Design Patterns في Flutter، بتمارين وجدول زمني.">
+<meta property="og:title" content="خطة المذاكرة · Flutter Design Patterns">
+<meta property="og:description" content="خطة على مراحل لتعلم Design Patterns في Flutter، بتمارين وجدول زمني.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://dobydragon.github.io/flutter-design-patterns/roadmap.html">
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+
+</head>
+<body>
+<a class="skip" href="#content">تخطى للمحتوى</a>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html"><img src="icons/favicon.svg" alt="" width="28" height="28"><bdi>Flutter Design Patterns</bdi></a>
+    <button class="menu-btn" aria-expanded="false" aria-controls="nav" aria-label="القائمة">☰</button>
+    <nav id="nav" class="nav"><a href="index.html">الرئيسية</a><a href="guide.html">الدليل</a><a href="examples.html">الأمثلة</a><a href="interview.html">أسئلة الـ Interview</a><a href="roadmap.html" aria-current="page">خطة المذاكرة</a></nav>
+    <button class="theme-btn" type="button" aria-label="تبديل الوضع الليلي">◐</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" aria-label="المحتويات">
+    <details class="toc-box" open>
+      <summary>المحتويات</summary>
+      <ul class="toc"><li class="l2"><a href="#الأنماط-على-3-مستويات"><bdi>الأنماط على 3 مستويات</bdi></a></li><li class="l2"><a href="#المرحلة-1-الأساسيات-أسبوعأسبوعين"><bdi>المرحلة 1 — الأساسيات (أسبوع–أسبوعين)</bdi></a></li><li class="l2"><a href="#المرحلة-2-الأنماط-الأكثر-استخداما-في-flutter-34-أسابيع"><bdi>المرحلة 2 — الأنماط الأكثر استخداماً في Flutter (3–4 أسابيع)</bdi></a><ul><li class="l3"><a href="#21-repository-بالشكل-الكامل-high"><bdi>2.1 Repository (بالشكل الكامل) — High</bdi></a></li><li class="l3"><a href="#22-result-type-error-handling-as-values-high"><bdi>2.2 Result type / Error handling as values — High</bdi></a></li><li class="l3"><a href="#23-di-vs-service-locator-فهم-عميق-high"><bdi>2.3 DI vs Service Locator (فهم عميق) — High</bdi></a></li><li class="l3"><a href="#24-strategy-بالـ-interface-مش-بس-function-medium-high"><bdi>2.4 Strategy (بالـ interface مش بس function) — Medium-High</bdi></a></li><li class="l3"><a href="#25-adapter-medium"><bdi>2.5 Adapter — Medium</bdi></a></li></ul></li><li class="l2"><a href="#المرحلة-3-أنماط-متقدمة-34-أسابيع"><bdi>المرحلة 3 — أنماط متقدمة (3–4 أسابيع)</bdi></a></li><li class="l2"><a href="#المرحلة-4-architecture-و-scalability-و-maintainability-46-أسابيع"><bdi>المرحلة 4 — Architecture و Scalability و Maintainability (4–6 أسابيع)</bdi></a><ul><li class="l3"><a href="#41-mvvm-بالشكل-الرسمي-في-flutter-high"><bdi>4.1 MVVM بالشكل الرسمي في Flutter — High</bdi></a></li><li class="l3"><a href="#42-clean-architecture-high-للـ-interviews-medium-للتطبيق"><bdi>4.2 Clean Architecture — High (للـ interviews) / Medium (للتطبيق)</bdi></a></li><li class="l3"><a href="#43-modularization-و-dependency-direction-medium"><bdi>4.3 Modularization و Dependency direction — Medium</bdi></a></li><li class="l3"><a href="#44-testing-strategy-high"><bdi>4.4 Testing strategy — High</bdi></a></li></ul></li><li class="l2"><a href="#الجدول-الزمني-المقترح-لو-ساعة-يوميا"><bdi>الجدول الزمني المقترح (لو ساعة يومياً)</bdi></a></li></ul>
+    </details>
+  </aside>
+  <main id="content" class="content"><h1 id="design-patterns-roadmap"><bdi>Design Patterns Roadmap</bdi></h1>
+<blockquote>
+<p dir="rtl"><strong>القاعدة:</strong> ما تتعلمش Pattern قبل ما تحس بالمشكلة اللي بيحلها. كل خطوة بتبدأ بـ "المشكلة".</p>
+</blockquote>
+<h2 id="الأنماط-على-3-مستويات">الأنماط على 3 مستويات</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th dir="rtl">غالباً بتستخدمه من غير ما تاخد بالك</th>
+<th dir="rtl">محتاج فهم أعمق</th>
+<th dir="rtl">لسه هتتعلمه</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="rtl">DI (constructor + Provider)، Observer (Streams/Cubit)، Facade، Singleton، Simple Factory، MVVM-style Cubits، Data Mapper</td>
+<td dir="rtl">Repository (بالـ interface)، Strategy، Adapter، Command، Service Locator vs DI</td>
+<td dir="rtl">Clean Architecture، Result type، Decorator (class-level)، State (GoF)، Builder، Abstract Factory، Factory Method، Prototype</td>
+</tr>
+</tbody>
+</table></div>
+<p dir="rtl"><strong>أهم فجوة عند أغلب Flutter developers:</strong> <strong>Abstraction (interfaces) + Dependency Inversion</strong>. ده اللي هيفتحلك Repository الصح و Clean Architecture و Decorator و Unit Testing للـ Cubits. ابدأ بيه.</p>
+<hr />
+<h2 id="المرحلة-1-الأساسيات-أسبوعأسبوعين">المرحلة 1 — الأساسيات (أسبوع–أسبوعين)</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th dir="auto">#</th>
+<th dir="rtl">المفهوم</th>
+<th dir="rtl">ليه دلوقتي</th>
+<th dir="rtl">تمرين</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto">1.1</td>
+<td dir="rtl"><strong>Interfaces في Dart</strong> (<code>abstract interface class</code>, <code>implements</code>)</td>
+<td dir="rtl">ده الأساس لكل اللي جاي</td>
+<td dir="rtl">اكتب <code>abstract interface class AuthRepository</code> بـ 3 methods، و 2 implementations (Firebase + Fake)</td>
+</tr>
+<tr>
+<td dir="auto">1.2</td>
+<td dir="rtl"><strong>SOLID</strong> — ركّز على SRP و DIP</td>
+<td dir="rtl">service بـ 900 سطر بيكسر SRP. والـ Cubits المعتمدة على concrete classes بتكسر DIP</td>
+<td dir="rtl">خد service كبير من مشروعك واكتب على ورق إزاي تقسمه لـ 3 classes</td>
+</tr>
+<tr>
+<td dir="auto">1.3</td>
+<td dir="ltr"><strong>Composition over inheritance</strong></td>
+<td dir="rtl">Decorator و Strategy مبنيين عليها</td>
+<td dir="auto">—</td>
+</tr>
+<tr>
+<td dir="auto">1.4</td>
+<td dir="rtl"><strong>Unit testing بـ fakes</strong></td>
+<td dir="rtl">من غير tests مش هتحس بقيمة DI</td>
+<td dir="rtl">اكتب test لـ <code>AttendanceService</code> (مثال 04) بـ <code>FixedClock</code></td>
+</tr>
+</tbody>
+</table></div>
+<p dir="rtl"><strong>المصادر:</strong> <a href="https://dart.dev/language/class-modifiers" target="_blank" rel="noopener">Dart – Class modifiers</a> · <a href="https://docs.flutter.dev/app-architecture/recommendations" target="_blank" rel="noopener">Flutter – Architecture recommendations</a></p>
+<hr />
+<h2 id="المرحلة-2-الأنماط-الأكثر-استخداما-في-flutter-34-أسابيع">المرحلة 2 — الأنماط الأكثر استخداماً في Flutter (3–4 أسابيع)</h2>
+<h3 id="21-repository-بالشكل-الكامل-high">2.1 Repository (بالشكل الكامل) — <strong>High</strong></h3>
+<ul>
+<li dir="rtl"><strong>يستاهل؟</strong> أيوه جداً. أكتر pattern بيتسأل عنه في Flutter interviews.</li>
+<li dir="rtl"><strong>ليه مهم:</strong> بيفصل "منين البيانات" عن "هعمل بيها إيه".</li>
+<li dir="rtl"><strong>هتحتاجه فين:</strong> أي feature فيها API + cache + offline (Attendance، Employee Profile).</li>
+<li dir="rtl"><strong>قبله:</strong> Interfaces (1.1)، DI.</li>
+<li dir="rtl"><strong>بعده:</strong> Data Source، Clean Architecture، Result type.</li>
+<li dir="rtl"><strong>تمرين صغير:</strong> مثال <a class="ex-link" href="examples.html#ex-03"><code>03_repository_employee_profile.dart</code></a>: زوّد <code>LocalDataSource</code> (cache بـ SharedPreferences) وخلي الـ repository يقرا local الأول.</li>
+<li dir="rtl"><strong>Feature حقيقية:</strong> في مشروعك أو مشروع تجريبي: <code>AttendanceRepository</code> (interface) + <code>RemoteAttendanceDataSource</code> + <code>LocalAttendanceDataSource</code>.</li>
+<li dir="rtl"><strong>الصعوبة:</strong> متوسطة · <strong>الأولوية:</strong> High</li>
+</ul>
+<h3 id="22-result-type-error-handling-as-values-high">2.2 Result type / Error handling as values — <strong>High</strong></h3>
+<ul>
+<li dir="rtl"><strong>يستاهل؟</strong> أيوه. Flutter نفسه بيوصي بيه في الـ architecture docs.</li>
+<li dir="rtl"><strong>ليه مهم:</strong> لما الـ services بترمي exceptions، كل Cubit لازم يفتكر <code>try/catch</code>. الـ <code>Result</code> بيخلي الـ compiler يجبرك.</li>
+<li dir="rtl"><strong>قبله:</strong> sealed classes، pattern matching في Dart 3.</li>
+<li dir="rtl"><strong>بعده:</strong> Command (Flutter docs بيربطهم ببعض).</li>
+<li dir="rtl"><strong>تمرين:</strong> مثال <a class="ex-link" href="examples.html#ex-14"><code>14_result_error_handling.dart</code></a>: زوّد <code>NetworkFailure</code> و <code>PermissionFailure</code> كـ sealed subclasses.</li>
+<li dir="rtl"><strong>Feature:</strong> <code>LoginRepository.signIn()</code> يرجّع <code>Result&lt;User&gt;</code>.</li>
+<li dir="rtl"><strong>الصعوبة:</strong> سهلة-متوسطة · <strong>الأولوية:</strong> High</li>
+<li dir="rtl"><strong>مصدر:</strong> <a href="https://docs.flutter.dev/app-architecture/design-patterns/result" target="_blank" rel="noopener">Flutter – Result pattern</a></li>
+</ul>
+<h3 id="23-di-vs-service-locator-فهم-عميق-high">2.3 DI vs Service Locator (فهم عميق) — <strong>High</strong></h3>
+<ul>
+<li dir="rtl"><strong>يستاهل؟</strong> أيوه. أغلب Flutter apps بتستخدم الاتنين، ولازم تعرف تشرح الفرق.</li>
+<li dir="rtl"><strong>تمرين:</strong> مثال <a class="ex-link" href="examples.html#ex-05"><code>05</code></a>. بعدين جرّب <code>get_it</code> في مشروع صغير وقارن بـ Provider.</li>
+<li dir="rtl"><strong>الصعوبة:</strong> سهلة · <strong>الأولوية:</strong> High</li>
+<li dir="rtl"><strong>مصدر:</strong> <a href="https://martinfowler.com/articles/injection.html" target="_blank" rel="noopener">Fowler – Injection</a></li>
+</ul>
+<h3 id="24-strategy-بالـ-interface-مش-بس-function-medium-high">2.4 Strategy (بالـ interface مش بس function) — <strong>Medium-High</strong></h3>
+<ul>
+<li dir="rtl"><strong>ليه مهم:</strong> طرق check-in مختلفة، طرق دفع، sorting/filtering، تسعير.</li>
+<li dir="rtl"><strong>قبله:</strong> Interfaces.</li>
+<li dir="rtl"><strong>بعده:</strong> State (شبهه في الشكل).</li>
+<li dir="rtl"><strong>تمرين:</strong> مثال <a class="ex-link" href="examples.html#ex-07"><code>07</code></a>: زوّد <code>FaceIdCheckIn</code> من غير ما تعدل أي class قديم.</li>
+<li dir="rtl"><strong>Feature:</strong> إعداد الشركة بيحدد طريقة الـ check-in.</li>
+<li dir="rtl"><strong>الصعوبة:</strong> سهلة · <strong>الأولوية:</strong> Medium-High</li>
+</ul>
+<h3 id="25-adapter-medium">2.5 Adapter — <strong>Medium</strong></h3>
+<ul>
+<li dir="rtl"><strong>ليه مهم:</strong> لو هتربط HR app بـ Odoo أو API قديم، ده بالظبط اللي هتعمله.</li>
+<li dir="rtl"><strong>تمرين:</strong> مثال <a class="ex-link" href="examples.html#ex-08"><code>08</code></a>: اعمل adapter تاني لـ API بيرجع الرصيد بالدقايق.</li>
+<li dir="rtl"><strong>الصعوبة:</strong> سهلة · <strong>الأولوية:</strong> Medium</li>
+</ul>
+<hr />
+<h2 id="المرحلة-3-أنماط-متقدمة-34-أسابيع">المرحلة 3 — أنماط متقدمة (3–4 أسابيع)</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th dir="ltr">Pattern</th>
+<th dir="rtl">يستاهل؟</th>
+<th dir="rtl">فين في Flutter</th>
+<th dir="rtl">قبله</th>
+<th dir="rtl">تمرين</th>
+<th dir="rtl">صعوبة</th>
+<th dir="rtl">أولوية</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="ltr"><strong>Decorator</strong></td>
+<td dir="rtl">أيوه</td>
+<td dir="rtl">caching/logging/retry حوالين repository</td>
+<td dir="rtl">Interfaces، Repository</td>
+<td dir="rtl">مثال <a class="ex-link" href="examples.html#ex-10"><code>10</code></a>: زوّد <code>RetryStatsRepository</code></td>
+<td dir="rtl">متوسطة</td>
+<td dir="ltr">Medium</td>
+</tr>
+<tr>
+<td dir="ltr"><strong>Command</strong></td>
+<td dir="rtl">أيوه (Flutter docs بيستخدمه مع ViewModels)</td>
+<td dir="rtl">أزرار بـ loading/error state، offline queue، undo</td>
+<td dir="ltr">Result</td>
+<td dir="rtl">مثال <a class="ex-link" href="examples.html#ex-11"><code>11</code></a> + اقرا Flutter Command docs</td>
+<td dir="rtl">متوسطة</td>
+<td dir="ltr">Medium</td>
+</tr>
+<tr>
+<td dir="ltr"><strong>State (GoF)</strong></td>
+<td dir="rtl">ساعات</td>
+<td dir="rtl">workflows: leave request، approval chains، order status</td>
+<td dir="rtl">sealed classes، Strategy</td>
+<td dir="rtl">مثال <a class="ex-link" href="examples.html#ex-12"><code>12</code></a>: زوّد <code>Cancelled</code> بعد <code>Approved</code> بشرط قبل تاريخ البداية</td>
+<td dir="rtl">متوسطة</td>
+<td dir="ltr">Medium-Low</td>
+</tr>
+<tr>
+<td dir="ltr"><strong>Builder</strong></td>
+<td dir="rtl">قليل في Dart</td>
+<td dir="rtl">requests/reports/queries معقدة</td>
+<td dir="ltr">named params</td>
+<td dir="rtl">مثال <a class="ex-link" href="examples.html#ex-13"><code>13</code></a>: زوّد <code>includeWeekends()</code> و validation</td>
+<td dir="rtl">سهلة</td>
+<td dir="ltr">Low</td>
+</tr>
+<tr>
+<td dir="ltr"><strong>Factory Method (GoF)</strong></td>
+<td dir="rtl">للفهم</td>
+<td dir="ltr">platform-specific widgets (Cupertino/Material)</td>
+<td dir="rtl">Inheritance، Factory</td>
+<td dir="rtl">اعمل <code>abstract class Dialog { Widget createButton(); }</code> بـ 2 subclasses</td>
+<td dir="rtl">متوسطة</td>
+<td dir="ltr">Low</td>
+</tr>
+<tr>
+<td dir="ltr"><strong>Abstract Factory</strong></td>
+<td dir="rtl">للـ interviews بس غالباً</td>
+<td dir="ltr">theme/platform families</td>
+<td dir="ltr">Factory Method</td>
+<td dir="rtl"><code>UiFactory</code> بيعمل Button + Switch لـ iOS و Android</td>
+<td dir="rtl">متوسطة-صعبة</td>
+<td dir="ltr">Low</td>
+</tr>
+<tr>
+<td dir="ltr"><strong>Prototype</strong></td>
+<td dir="rtl">للفهم</td>
+<td dir="rtl">نادر. <code>copyWith</code> بيغطي الحاجة</td>
+<td dir="auto">—</td>
+<td dir="rtl">اكتب فقرة: ليه <code>copyWith</code> مش Prototype</td>
+<td dir="rtl">سهلة</td>
+<td dir="ltr">Low</td>
+</tr>
+</tbody>
+</table></div>
+<p dir="rtl"><strong>المصادر:</strong> <a href="https://refactoring.guru/design-patterns/catalog" target="_blank" rel="noopener">refactoring.guru catalog</a> · <a href="https://docs.flutter.dev/app-architecture/design-patterns/command" target="_blank" rel="noopener">Flutter – Command</a></p>
+<hr />
+<h2 id="المرحلة-4-architecture-و-scalability-و-maintainability-46-أسابيع">المرحلة 4 — Architecture و Scalability و Maintainability (4–6 أسابيع)</h2>
+<h3 id="41-mvvm-بالشكل-الرسمي-في-flutter-high">4.1 MVVM بالشكل الرسمي في Flutter — <strong>High</strong></h3>
+<ul>
+<li dir="rtl">اقرا <a href="https://docs.flutter.dev/app-architecture/guide" target="_blank" rel="noopener">Flutter App Architecture Guide</a> و الـ <a href="https://docs.flutter.dev/app-architecture/case-study" target="_blank" rel="noopener">case study</a>.</li>
+<li dir="rtl"><strong>قارن بمشروعك:</strong> Cubit = ViewModel ✓. بس شيل <code>TextEditingController</code> من الـ state، والـ <code>StreamBuilder</code> اللي بيقروا Firestore من الـ UI (جرّب على مشروع تدريبي الأول).</li>
+</ul>
+<h3 id="42-clean-architecture-high-للـ-interviews-medium-للتطبيق">4.2 Clean Architecture — <strong>High (للـ interviews) / Medium (للتطبيق)</strong></h3>
+<ul>
+<li dir="rtl"><strong>قبله:</strong> Repository + interfaces + Result + DI.</li>
+<li dir="rtl"><strong>المفاهيم:</strong> Entities، Use Cases، Repository interfaces في الـ domain، implementations في الـ data، <strong>Dependency Rule</strong> (الـ dependencies بتشاور للداخل).</li>
+<li dir="rtl"><strong>تمرين:</strong> feature واحدة كاملة (Attendance check-in) بـ 3 layers: <code>domain/</code> (entity + repo interface + <code>CheckInUseCase</code>)، <code>data/</code> (data sources + repo impl)، <code>presentation/</code> (cubit + screen).</li>
+<li dir="rtl"><strong>امتى زيادة؟</strong> app صغير أو MVP سريع. الـ use case اللي بيعمل <code>return repo.x()</code> بس = boilerplate.</li>
+<li dir="rtl"><strong>مصدر:</strong> <a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html" target="_blank" rel="noopener">Uncle Bob – Clean Architecture</a></li>
+</ul>
+<h3 id="43-modularization-و-dependency-direction-medium">4.3 Modularization و Dependency direction — <strong>Medium</strong></h3>
+<ul>
+<li dir="rtl"><strong>علامات المشكلة:</strong> package cycle بين packages المشروع، أو <code>core/</code> بيستورد من <code>features/</code>.</li>
+<li dir="rtl"><strong>تمرين (على ورق):</strong> ارسم الـ packages والأسهم. حدد إزاي تطلع <code>shared_models</code> package يكسر الـ cycle.</li>
+</ul>
+<h3 id="44-testing-strategy-high">4.4 Testing strategy — <strong>High</strong></h3>
+<ul>
+<li dir="rtl">Unit (cubits بـ fake repositories)، widget tests، integration.</li>
+<li dir="rtl"><strong>قبله:</strong> كل المرحلة 2.</li>
+</ul>
+<hr />
+<h2 id="الجدول-الزمني-المقترح-لو-ساعة-يوميا">الجدول الزمني المقترح (لو ساعة يومياً)</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th dir="rtl">الأسبوع</th>
+<th dir="rtl">الهدف</th>
+<th dir="rtl">الناتج</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto">1</td>
+<td dir="rtl">Interfaces + DIP + أمثلة 04، 03</td>
+<td dir="rtl">Repository بـ interface + fake + test</td>
+</tr>
+<tr>
+<td dir="auto">2</td>
+<td dir="rtl">Result + أمثلة 14، 09</td>
+<td dir="rtl"><code>LoginRepository</code> بيرجع <code>Result</code></td>
+</tr>
+<tr>
+<td dir="auto">3</td>
+<td dir="rtl">DI vs SL + Strategy + Adapter (05، 07، 08)</td>
+<td dir="rtl">تشرح الفرق بصوت عالي في دقيقتين</td>
+</tr>
+<tr>
+<td dir="auto">4–5</td>
+<td dir="rtl">Decorator + Command + State (10، 11، 12)</td>
+<td dir="rtl">feature صغيرة فيها offline queue</td>
+</tr>
+<tr>
+<td dir="auto">6–8</td>
+<td dir="rtl">MVVM رسمي + Clean Architecture</td>
+<td dir="rtl">مشروع Attendance صغير بـ 3 layers على GitHub</td>
+</tr>
+<tr>
+<td dir="auto">9</td>
+<td dir="rtl">مراجعة + Interview questions</td>
+<td dir="rtl">تجاوب على أسئلة Mid-level من غير ما تبص</td>
+</tr>
+</tbody>
+</table></div>
+<p dir="rtl"><strong>المشروع التجريبي اللي يجمع كله (Portfolio piece):</strong> "Mini HR Attendance" — Login (Facade + Result)، Check-in (Strategy + Command offline queue)، Employee Profile (Repository + Decorator cache)، Leave Request (State)، Dashboard (Observer streams)، DI بـ Provider أو get_it.</p></main>
+</div>
+<footer class="footer">
+  <p>محتوى تعليمي عام عن الـ Design Patterns في Flutter و Dart. المصادر الأصلية مذكورة جنب كل جزء.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dart.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
